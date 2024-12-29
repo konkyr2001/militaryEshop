@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import profileImg from "../../assets/icons/profile-svgrepo-com.svg";
+import shoppingCartImg from "../../assets/icons/shopping-cart-01-svgrepo-com.svg";
+
 import Logo from "./Logo";
 function Header() {
   return (
@@ -33,14 +36,16 @@ function Header() {
           </li>
         </ul>
         <ul className="flex ml-auto space-x-8">
-          <li>
-            <i className="fa-solid fa-heart"></i>
+          <li className="h-[30px] pt-1 flex items-center">
+            <i className="fa-regular fa-heart text-2xl cursor-pointer"></i>
           </li>
-          <li>
-            <i className="fa-solid fa-cart-shopping"></i>
+          <li className="h-[30px] flex items-center">
+            {/* <i className="fa-solid fa-cart-shopping"></i> */}
+            <img className="h-[25px] object-cover pointer" src={shoppingCartImg} />
           </li>
-          <li>
-            <i className="fa-solid fa-user"></i>
+          <li className="h-[30px] flex items-center">
+            {/* <i className="fa-solid fa-user"></i> */}
+            <img className="h-[23px] object-cover pointer" src={profileImg} />
           </li>
         </ul>
       </div>
