@@ -1,4 +1,4 @@
-import SportShoe from "../../assets/SportShoes.png";
+import SportShoe from "../../assets/images/SportShoes.png";
 
 function ShopAll() {
   return (

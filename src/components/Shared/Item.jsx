@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Rating } from "react-simple-star-rating";
-import LoginDialog from "./dialog/LoginDialog";
+import LoginDialog from "./ReminderDialog";
+import "./Item.css";
 function Item({ icon, title, money, discount, ratingValue, ratingAmount, paddingTop }) {
   const [visible, setVisible] = useState(false);
   const [action, setAction] = useState();

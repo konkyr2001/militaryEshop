@@ -1,4 +1,4 @@
-import IconsItem from "./IconsItem";
+import IconsItem from "./ServicesItem";
 
 function Icons() {
   return (

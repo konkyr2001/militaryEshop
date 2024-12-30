@@ -2,7 +2,7 @@ import shoe1 from "../../assets/shoes/air-zoom-pegasus-37.png";
 import shoe2 from "../../assets/shoes/Maroon.png";
 import shoe3 from "../../assets/shoes/air-max-90-flyease.png";
 import shoe4 from "../../assets/shoes/cosmic-unity.png";
-import Item from "./Item";
+import Item from "../Shared/Item";
 
 function ShopSection() {
   return (

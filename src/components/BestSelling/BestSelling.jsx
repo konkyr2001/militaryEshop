@@ -2,8 +2,8 @@ import shoe1 from "../../assets/shoes/air-zoom-pegasus-37.png";
 import shoe2 from "../../assets/shoes/Maroon.png";
 import shoe3 from "../../assets/shoes/air-max-90-flyease.png";
 import shoe4 from "../../assets/shoes/cosmic-unity.png";
-import Item from "./Item";
-
+import Item from "../Shared/Item";
+import "./BestSelling.css";
 function BestSelling() {
   return (
     <div className="mt-40 font-cabinet pt-10">
@@ -14,13 +14,13 @@ function BestSelling() {
             <button>
               <p className="font-bold">PREV</p>
               <div className="arrow-left"></div>
-              <span className="line w-9"></span>
+              <span className="horizontal-line w-9"></span>
             </button>
           </li>
           <li>
             <button>
               <p className="font-bold">NEXT</p>
-              <span className="line w-9"></span>
+              <span className="horizontal-line w-9"></span>
               <div className="arrow-right"></div>
             </button>
           </li>

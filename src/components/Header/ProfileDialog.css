@@ -1,0 +1,14 @@
+.triangle-up {
+  display: inline-block;
+  border-bottom: 15px solid rgb(224, 223, 223);
+  border-right: 15px solid transparent;
+  border-left: 15px solid transparent;
+}
+
+.vertical-line {
+  display: inline-block;
+  border: 0;
+  border-left: 2px solid black;
+  margin: 0em 0.25em;
+  padding: 0;
+}

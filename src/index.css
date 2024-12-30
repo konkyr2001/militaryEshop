@@ -12,14 +12,14 @@
 
 @font-face {
   font-family: "Cabinet Grotesk";
-  src: url("./fonts/CabinetGrotesk-Extralight.otf") format("opentype");
+  src: url("./assets/fonts/CabinetGrotesk-Extralight.otf") format("opentype");
   font-weight: 200; /* Light weight */
   font-style: normal;
 }
 
 @font-face {
   font-family: "Cabinet Grotesk Medium";
-  src: url("./fonts/CabinetGrotesk-Medium.otf") format("opentype");
+  src: url("./assets/fonts/CabinetGrotesk-Medium.otf") format("opentype");
   font-weight: 500; /* Medium weight */
   font-style: normal;
 }
