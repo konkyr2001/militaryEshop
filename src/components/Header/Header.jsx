@@ -17,7 +17,7 @@ function Header() {
   }
 
   return (
-    <nav>
+    <nav className="w-screen">
       <p className="font-cabinet bg-lightPurple text-center p-3 text-white">
         New here? Save 20% with code: YR24
       </p>
