@@ -6,16 +6,30 @@ async function checkUser(email, password) {
     const data = await response.json();
     if (response.ok) {
       if (password === data.password) {
-        return true;
+        return {
+          found: true,
+          role: data.role,
+        };
       }
-      return false;
+      return {
+        found: false,
+      };
     }
   } catch (error) {
     throw error.message;
   }
 }
 
-async function signupUser(email, password) {
+async function getUser(email) {
+  try {
+    const response = await fetch(`http://localhost:3000/users/login/${email}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error.message;
+  }
+}
+async function signupUser(email, password, role) {
   try {
     const response = await fetch("http://localhost:3000/users/signup", {
       method: "POST",
@@ -25,6 +39,7 @@ async function signupUser(email, password) {
       body: JSON.stringify({
         email,
         password,
+        role,
       }),
     });
 
@@ -38,4 +53,4 @@ async function signupUser(email, password) {
   }
 }
 
-export { checkUser, signupUser };
+export { checkUser, getUser, signupUser };

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import profileImg from "../../assets/icons/profile-svgrepo-com.svg";
 import shoppingCartImg from "../../assets/icons/shopping-cart-01-svgrepo-com.svg";
 import ProfileDialog from "./ProfileDialog";
@@ -7,18 +7,9 @@ import Logo from "./Logo";
 import LoggedInProfileDialog from "./LoggedInProfileDialog";
 
 function Header({ user }) {
-  const profileRef = useRef(null);
-
-  function handleProfile() {
-    if (!profileRef.current) {
-      return;
-    }
-
-    profileRef.current.classList.contains("hidden")
-      ? profileRef.current.classList.remove("hidden")
-      : profileRef.current.classList.add("hidden");
-  }
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // using imageRef for modal to use it inside the modal's click listener
+  const imageRef = useRef(null);
   return (
     <nav className="w-full">
       <p className="font-cabinet bg-lightPurple text-center p-3 text-white">
@@ -61,13 +52,20 @@ function Header({ user }) {
           <li className="h-[30px] flex items-center relative">
             {/* <i className="fa-solid fa-user"></i> */}
             <img
+              ref={imageRef}
               className="h-[23px] object-cover pointer"
               src={profileImg}
-              onClick={handleProfile}
+              onClick={(e) => setIsDialogOpen((prevState) => !prevState)}
             />
-            {!user && <ProfileDialog ref={profileRef} handleProfile={handleProfile} />}
-            {user && (
-              <LoggedInProfileDialog ref={profileRef} handleProfile={handleProfile} user={user} />
+            {isDialogOpen && !user && (
+              <ProfileDialog imageRef={imageRef} setIsDialogOpen={setIsDialogOpen} />
+            )}
+            {isDialogOpen && user && (
+              <LoggedInProfileDialog
+                imageRef={imageRef}
+                setIsDialogOpen={setIsDialogOpen}
+                user={user}
+              />
             )}
           </li>
         </ul>

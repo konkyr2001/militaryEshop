@@ -6,10 +6,12 @@ import AlreadyText from "../components/Shared/AlreadyText";
 import { useNavigate } from "react-router-dom";
 import { signupUser } from "../services/user";
 import Loading from "../components/Shared/Loading";
+import RememberMe from "../components/Shared/RememberMe";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("DEFAULT");
   const [remember, setRemember] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
@@ -19,7 +21,7 @@ const SignUp = () => {
     event.preventDefault();
 
     try {
-      const userCreated = await signupUser(email, password);
+      const userCreated = await signupUser(email, password, role);
       if (userCreated) {
         setIsLoading(true);
         setTimeout(() => {
@@ -28,6 +30,8 @@ const SignUp = () => {
             state: {
               email,
               password,
+              role,
+              remember,
             },
           });
         }, 500);
@@ -48,30 +52,37 @@ const SignUp = () => {
           <form className="mx-3 mt-6 mb-5" method="POST" onSubmit={(e) => handleSubmit(e)}>
             <fieldset className="flex justify-center items-center flex-col gap-5">
               <EmailInput
-                placeholder="Enter your email"
+                placeholder="Enter your email*"
                 className="px-4 tracking-wider"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <PasswordInput
-                placeholder="Enter your password"
+                placeholder="Enter your password*"
                 className="px-4 tracking-wider"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 ref={passwordRef}
               />
-              <span className="w-full ml-2 flex items-center gap-3">
-                <input
-                  className="h-4 w-4"
-                  type="checkbox"
-                  id="remember-me"
-                  value={remember}
-                  onChange={() => setRemember((prevState) => !prevState)}
-                />
-                <label className="text-gray-600" htmlFor="remember-me">
-                  Remember me
-                </label>
-              </span>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className={`text-gray-400 border rounded-sm p-2 px-3 tracking-wider w-full focus:outline-blue-300 focus:border-blue-500
+                   ${role === "seller" ? "bg-red-200 text-gray-600" : role === "customer" ? "bg-blue-200 text-gray-600" : "text-gray-400"}`}
+                required
+              >
+                <option value="DEFAULT" disabled className="text-gray-400 bg-gray-100">
+                  Choose your role*
+                </option>
+                <option value="customer" className="text-gray-600 bg-blue-200 hover:bg-blue-200">
+                  Customer
+                </option>
+                <option value="seller" className="text-gray-600 bg-red-200 hover:bg-blue-200">
+                  Seller
+                </option>
+              </select>
+
+              <RememberMe className={"w-4 h-4"} remember={remember} setRemember={setRemember} />
               <SubmitButton
                 buttonText="Sign Up"
                 className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold hover:from-green-600 hover:to-green-700"

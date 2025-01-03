@@ -1,28 +1,57 @@
-import { forwardRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../Shared/Loading";
 
-const LoggedInProfileDialog = forwardRef(({ handleLoggedInProfile, user }, ref) => {
+function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
   const [isLoading, setIsLoading] = useState(false);
+  const divRef = useRef();
+
   function logout() {
     setIsLoading(true);
+    localStorage.setItem("remember", false);
     setTimeout(() => {
       location.reload();
       setIsLoading(false);
     }, 200);
   }
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        divRef.current &&
+        !divRef.current.contains(event.target) &&
+        !imageRef.current.contains(event.target)
+      ) {
+        setIsDialogOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [divRef]);
+
   return (
     <>
       {isLoading && <Loading />}
       <div
-        ref={ref}
-        className="absolute top-[50px] -right-10 hidden z-50 bg-white shadow-md rounded-lg"
+        ref={divRef}
+        className="absolute top-[50px] -right-10 z-50 bg-white shadow-md rounded-lg"
       >
         <div className="triangle-up border-b-gray-300 border-b-[15px] absolute right-9 -top-[0.9rem]"></div>
         <div className="p-5 border border-gray-300 rounded-lg min-w-64">
           <ul className="pl-2 flex flex-col gap-2">
-            <li className="text-black font-bold m-auto">{user.email}</li>
+            <li
+              className={`text-black font-bold m-auto ${user.role === "seller" ? "text-red-300" : "text-blue-300"}`}
+            >
+              {user.email}
+              <br></br>
+              {user.password}
+              <br></br>
+              {user.role}
+            </li>
             <li className="hover:underline decoration-blue-500 cursor-pointer">
               <Link>My Account</Link>
             </li>
@@ -43,6 +72,6 @@ const LoggedInProfileDialog = forwardRef(({ handleLoggedInProfile, user }, ref) 
       </div>
     </>
   );
-});
+}
 
 export default LoggedInProfileDialog;

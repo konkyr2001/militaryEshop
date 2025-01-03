@@ -10,10 +10,12 @@ import { useState, useRef } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { checkUser } from "../services/user";
 import Loading from "../components/Shared/Loading";
+import RememberMe from "../components/Shared/RememberMe";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const [userFound, setUserFound] = useState("true");
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
@@ -23,8 +25,9 @@ const Login = () => {
     event.preventDefault();
 
     try {
+      // checkUser returns an object with found and role attributes
       const userExist = await checkUser(email, password);
-      if (userExist) {
+      if (userExist.found) {
         setUserFound(true);
         setIsLoading(true);
         setTimeout(() => {
@@ -33,6 +36,8 @@ const Login = () => {
             state: {
               email,
               password,
+              role: userExist.role,
+              remember,
             },
           });
         }, 500);
@@ -84,6 +89,7 @@ const Login = () => {
                       ref={passwordRef}
                     />
                   </span>
+                  <RememberMe className={"w-4 h-4"} remember={remember} setRemember={setRemember} />
                   <SubmitButton buttonText="Log in" className=" py-3 px-6 rounded-lg font-bold" />
                 </fieldset>
               </form>
