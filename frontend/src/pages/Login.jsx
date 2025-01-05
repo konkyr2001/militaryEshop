@@ -37,6 +37,7 @@ const Login = () => {
               email,
               password,
               role: userExist.role,
+              favourites: userExist.favourites,
               remember,
             },
           });

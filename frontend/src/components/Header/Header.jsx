@@ -42,8 +42,11 @@ function Header({ user }) {
           </li>
         </ul>
         <ul className="flex ml-auto space-x-8">
-          <li className="h-[30px] pt-1 flex items-center">
+          <li className="h-[30px] pt-1 flex items-center relative">
             <i className="fa-regular fa-heart text-2xl cursor-pointer"></i>
+            {user?.favourites?.length > 1 && (
+              <p className="absolute -right-1 top-4">{user?.favourites?.length}</p>
+            )}
           </li>
           <li className="h-[30px] flex items-center">
             {/* <i className="fa-solid fa-cart-shopping"></i> */}

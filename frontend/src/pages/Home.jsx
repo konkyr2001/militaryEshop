@@ -8,11 +8,12 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import Loading from "../components/Shared/Loading";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getUser } from "../services/user";
+import { UserContext } from "../App";
 
 function Home() {
-  const [user, setUser] = useState();
+  const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
   // when component get opened it checks if the user is remembered and log him in
@@ -20,9 +21,13 @@ function Home() {
     async function getRememberedUser() {
       if (localStorage.getItem("remember") === "true") {
         const email = localStorage.getItem("rememberEmail");
-        const user = await getUser(email);
-        setUser(user);
-        console.log("mpike");
+        console.log(email);
+        try {
+          const currentUser = await getUser(email);
+          setUser(currentUser);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+        }
       }
     }
     getRememberedUser();
@@ -32,12 +37,13 @@ function Home() {
   // logs in the user or displays the default home page
   useEffect(() => {
     if (location.state) {
-      const { email, password, role, remember } = location.state;
+      const { email, password, role, remember, favourites } = location.state;
 
       setUser({
         email,
         password,
         role,
+        favourites,
       });
 
       if (remember) {

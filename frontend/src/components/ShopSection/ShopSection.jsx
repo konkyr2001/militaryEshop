@@ -1,10 +1,25 @@
-import shoe1 from "../../assets/shoes/air-zoom-pegasus-37.png";
-import shoe2 from "../../assets/shoes/Maroon.png";
-import shoe3 from "../../assets/shoes/air-max-90-flyease.png";
-import shoe4 from "../../assets/shoes/cosmic-unity.png";
+import shoe1 from "../../assets/shoes/white-shoe.png";
+import shoe2 from "../../assets/shoes/red-shoe.png";
+import shoe3 from "../../assets/shoes/cyan-shoe.png";
+import shoe4 from "../../assets/shoes/blue-shoe.png";
 import Item from "../Shared/Item";
+import { useEffect, useState } from "react";
+import { getAllProducts } from "../../services/products";
+
+const _SHOEPATH = "../../assets/shoes/";
 
 function ShopSection() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function getProducts() {
+      const allProducts = await getAllProducts();
+      if (allProducts.found) {
+        setProducts(allProducts.products);
+      }
+    }
+
+    getProducts();
+  }, []);
   return (
     <div className="font-cabinet mt-44 pb-10">
       <ul className="flex gap-x-10">
@@ -25,87 +40,23 @@ function ShopSection() {
           </button>
         </li>
       </ul>
-      <section className="flex flex-col gap-y-12 w-full pt-20">
-        <ul className="flex gap-x-20 justify-center">
-          <li className="w-[270px]">
-            <Item
-              icon={shoe1}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              ratingValue={5}
-              ratingAmount={88}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe2}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              ratingValue={5}
-              ratingAmount={88}
-              paddingTop={"40px"}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe3}
-              title="HAVIT HV-G92 Gamepad"
-              money="1160"
-              discount="35"
-              ratingValue={5}
-              ratingAmount={75}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe4}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              ratingValue={4}
-              ratingAmount={88}
-            />
-          </li>
-        </ul>
-        <ul className="flex gap-x-20 justify-center">
-          <li className="w-[270px]">
-            <Item
-              icon={shoe3}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              ratingValue={5}
-              ratingAmount={88}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe4}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              discount="35"
-              ratingValue={5}
-              ratingAmount={75}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe2}
-              title="HAVIT HV-G92 Gamepad"
-              money="1160"
-              ratingValue={5}
-              ratingAmount={88}
-              paddingTop={"40px"}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe1}
-              title="HAVIT HV-G92 Gamepad"
-              money="160"
-              discount="35"
-              ratingValue={4}
-              ratingAmount={75}
-            />
-          </li>
+      <section className="flex flex-col justify-center items-center gap-y-12 w-full pt-20">
+        <ul className="flex flex-wrap gap-x-20 justify-center max-w-[1400px]">
+          {products.map((product, index) => {
+            return (
+              <li className="w-[270px]" key={product.id}>
+                <Item
+                  id={product.id}
+                  icon={`${_SHOEPATH}${product.icon}`}
+                  title={product.title}
+                  money={product.money}
+                  discount={product.discount}
+                  ratingValue={product.rating}
+                  ratingAmount={product.ratingAmount}
+                />
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>

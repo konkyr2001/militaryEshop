@@ -13,7 +13,7 @@ function ProfileDialog({ imageRef, setIsDialogOpen }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const [userFound, setUserFound] = useState("true");
+  const [userFound, setUserFound] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const divRef = useRef(null);
   const passwordRef = useRef(null);
@@ -53,6 +53,7 @@ function ProfileDialog({ imageRef, setIsDialogOpen }) {
               email,
               password,
               role: userExist.role,
+              favourites: userExist.favourites,
               remember,
             },
           });

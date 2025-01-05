@@ -24,6 +24,9 @@ mongoose
 const user = require("./routes/user");
 app.use("/users", user);
 
+const product = require("./routes/product");
+app.use("/products", product);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

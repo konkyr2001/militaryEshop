@@ -4,7 +4,7 @@ import PasswordInput from "../components/Shared/PasswordInput";
 import SubmitButton from "../components/Shared/SubmitButton";
 import AlreadyText from "../components/Shared/AlreadyText";
 import { useNavigate } from "react-router-dom";
-import { signupUser } from "../services/user";
+import { signupUser, getUser } from "../services/user";
 import Loading from "../components/Shared/Loading";
 import RememberMe from "../components/Shared/RememberMe";
 
@@ -13,14 +13,33 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("DEFAULT");
   const [remember, setRemember] = useState(false);
+  const [formError, setFormError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
 
+  async function submitRequirementsCheck() {
+    const userExists = await getUser(email);
+    if (userExists) {
+      setFormError("USER");
+      return false;
+    } else {
+      if (role === "DEFAULT") {
+        setFormError("SELECT");
+        return false;
+      }
+    }
+    setFormError(false);
+    return true;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
-
     try {
+      const check = await submitRequirementsCheck();
+      if (!check) {
+        return;
+      }
       const userCreated = await signupUser(email, password, role);
       if (userCreated) {
         setIsLoading(true);
@@ -50,10 +69,18 @@ const SignUp = () => {
         <div className="min-w-[30rem] shadow-xl bg-white rounded-xl p-8 font-cabinet">
           <h1 className="font-bold text-2xl text-left w-full">Create an Account</h1>
           <form className="mx-3 mt-6 mb-5" method="POST" onSubmit={(e) => handleSubmit(e)}>
+            {formError === "USER" && (
+              <p className="text-red-500 mb-3 tracking-wider">
+                Email already exists, please try another one
+              </p>
+            )}
+            {formError === "SELECT" && (
+              <p className="text-red-500 mb-3 tracking-wider">Please select a role</p>
+            )}
             <fieldset className="flex justify-center items-center flex-col gap-5">
               <EmailInput
                 placeholder="Enter your email*"
-                className="px-4 tracking-wider"
+                className={`px-4 tracking-wider ${formError === "USER" ? "border-red-300" : ""}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -67,7 +94,8 @@ const SignUp = () => {
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className={`text-gray-400 border rounded-sm p-2 px-3 tracking-wider w-full focus:outline-blue-300 focus:border-blue-500
+                className={`text-gray-400 border rounded-sm p-2 px-3 tracking-wider w-full
+                  ${formError === "SELECT" ? "border-red-500" : ""} focus:outline-blue-300 focus:border-blue-500
                    ${role === "seller" ? "bg-red-200 text-gray-600" : role === "customer" ? "bg-blue-200 text-gray-600" : "text-gray-400"}`}
                 required
               >

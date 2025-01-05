@@ -6,21 +6,26 @@ import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Layout from "./Layout";
-
+import { useState } from "react";
+import React from "react";
+export const UserContext = React.createContext(null);
 function App() {
+  const [user, setUser] = useState(null);
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="product" element={<Product />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="*" element={<NoPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <UserContext.Provider value={{ user: user, setUser: setUser }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="product" element={<Product />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </UserContext.Provider>
     </>
   );
 }

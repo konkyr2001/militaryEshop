@@ -58,6 +58,11 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
             <li className="hover:underline decoration-blue-500 cursor-pointer">
               <Link>Orders</Link>
             </li>
+            {user.role === "seller" && (
+              <li className="hover:underline decoration-blue-500 cursor-pointer">
+                <Link>My Products</Link>
+              </li>
+            )}
             <li className="hover:underline decoration-blue-500 cursor-pointer">
               <Link>Settings</Link>
             </li>

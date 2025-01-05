@@ -14,6 +14,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  favourites: [
+    {
+      type: String,
+      ref: "Product",
+    },
+  ],
+  cart: [
+    {
+      type: String,
+      unique: true,
+    },
+  ],
 });
 
 userSchema.set("toJSON", {
