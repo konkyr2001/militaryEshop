@@ -28,10 +28,10 @@ router.put("/favourites/add/:email", async (req, res) => {
       product.likes = Number(product.likes) + 1;
       console.log(product);
       await product.save();
-      console.log("product save");
+      console.log("add product save");
       user.favourites.push(productId);
       await user.save();
-      console.log("user save");
+      console.log("add user save");
       return res.status(200).json(user);
     } else {
       return res.status(400).json({
@@ -58,10 +58,10 @@ router.put("/favourites/remove/:email", async (req, res) => {
       product.likes = Number(product.likes) - 1;
       console.log(product);
       await product.save();
-      console.log("product save");
+      console.log("remove product save");
       user.favourites.remove(productId);
       await user.save();
-      console.log("user save");
+      console.log("remove user save");
       return res.status(200).json(user);
     } else {
       return res.status(400).json({

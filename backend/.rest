@@ -1,7 +1,7 @@
-POST http://localhost:3000/users
-Content-Type: application/json
-
+POST http://localhost:3000/users/signup
+Content-Type: "application/json"
 {
-  "email":"konkyr222@!!b",
-  "password":"password222@!!"
+  "email":"konkyr2001@hotmail.com2",
+  "password":"1",
+  "role": "customer",
 }

@@ -44,7 +44,7 @@ function Header({ user }) {
         <ul className="flex ml-auto space-x-8">
           <li className="h-[30px] pt-1 flex items-center relative">
             <i className="fa-regular fa-heart text-2xl cursor-pointer"></i>
-            {user?.favourites?.length > 1 && (
+            {user?.favourites?.length > 0 && (
               <p className="absolute -right-1 top-4">{user?.favourites?.length}</p>
             )}
           </li>

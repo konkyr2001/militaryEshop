@@ -41,6 +41,7 @@ async function addToFavourites(email, productId) {
         productId,
       }),
     });
+    console.log(response);
     if (response.ok) {
       const data = await response.json();
       return {
@@ -48,7 +49,9 @@ async function addToFavourites(email, productId) {
         favourites: data.favourites,
       };
     }
-    return response;
+    return {
+      found: false,
+    };
   } catch (error) {
     return error.message;
   }
@@ -56,6 +59,7 @@ async function addToFavourites(email, productId) {
 
 async function removeFromFavourites(email, productId) {
   try {
+    console.log("remove");
     const response = await fetch(`${url}/favourites/remove/${email}`, {
       method: "PUT",
       headers: {
