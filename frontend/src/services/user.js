@@ -9,6 +9,7 @@ async function checkUser(email, password) {
           found: true,
           role: data.role,
           favourites: data.favourites,
+          cart: data.cart,
         };
       }
       return {
@@ -82,6 +83,60 @@ async function removeFromFavourites(email, productId) {
   }
 }
 
+async function addToCart(email, productId) {
+  try {
+    const response = await fetch(`${url}/cart/add/${email}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId,
+      }),
+    });
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        found: true,
+        cart: data.cart,
+      };
+    }
+    return {
+      found: false,
+    };
+  } catch (error) {
+    return error.message;
+  }
+}
+
+async function removeFromCart(email, productId) {
+  try {
+    const response = await fetch(`${url}/cart/remove/${email}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId,
+      }),
+    });
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        found: true,
+        cart: data.cart,
+      };
+    }
+    return {
+      found: false,
+    };
+  } catch (error) {
+    return error.message;
+  }
+}
+
 async function signupUser(email, password, role) {
   try {
     const response = await fetch(`${url}/signup`, {
@@ -106,4 +161,12 @@ async function signupUser(email, password, role) {
   }
 }
 
-export { checkUser, getUser, addToFavourites, removeFromFavourites, signupUser };
+export {
+  checkUser,
+  getUser,
+  addToFavourites,
+  removeFromFavourites,
+  addToCart,
+  removeFromCart,
+  signupUser,
+};

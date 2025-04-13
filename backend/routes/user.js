@@ -44,9 +44,9 @@ router.put("/favourites/add/:email", async (req, res) => {
 });
 
 router.put("/favourites/remove/:email", async (req, res) => {
+  console.log("asd");
   const email = req.params.email;
   const productId = req.body.productId;
-
   try {
     const user = await User.findOne({ email });
     console.log(user.favourites);
@@ -65,7 +65,49 @@ router.put("/favourites/remove/:email", async (req, res) => {
       return res.status(200).json(user);
     } else {
       return res.status(400).json({
-        message: "Product already on favourites",
+        message: "Product not found on favourites",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/cart/add/:email", async (req, res) => {
+  const email = req.params.email;
+  const productId = req.body.productId;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user.cart.includes(productId)) {
+      user.cart.push(productId);
+      await user.save();
+      console.log("add user save");
+      return res.status(200).json(user);
+    } else {
+      return res.status(400).json({
+        message: "Product already on cart",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/cart/remove/:email", async (req, res) => {
+  const email = req.params.email;
+  const productId = req.body.productId;
+  try {
+    const user = await User.findOne({ email });
+    console.log(user);
+    if (user.cart.includes(productId)) {
+      user.cart.remove(productId);
+      await user.save();
+      console.log("add user save");
+      return res.status(200).json(user);
+    } else {
+      return res.status(400).json({
+        message: "Product not found on cart",
       });
     }
   } catch (error) {

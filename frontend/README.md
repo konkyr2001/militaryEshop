@@ -10,7 +10,7 @@ Currently, two official plugins are available:
 Μελλοντικέ μου εαυτέ, έχεις να κάνεις τα εξής tasks όταν γυρίσεις από το στρατό (καλή τύχη να ξανά διαβάσεις τον κώδικα μετά από μήνες):
 Things to do:
 
-- Add to cart
+- Add to cart DONE
 - Header:
 
   - Favourites header button functionality (will show the products that have been added to favourites)

@@ -38,6 +38,7 @@ const Login = () => {
               password,
               role: userExist.role,
               favourites: userExist.favourites,
+              cart: userExist.cart,
               remember,
             },
           });

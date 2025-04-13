@@ -4,11 +4,14 @@ import { Rating } from "react-simple-star-rating";
 import "./Item.css";
 import ReminderDialog from "./ReminderDialog";
 import { addToFavourites, removeFromFavourites } from "../../services/user";
+import { addToCart, removeFromCart } from "../../services/user";
 import "like-effects";
 
 function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, paddingTop }) {
   const { user, setUser } = useContext(UserContext);
   const [visible, setVisible] = useState(false);
+  const [cartInitialValue, setCartInitialValue] = useState(false);
+  const [cart, setCart] = useState(false);
   const [favouritesInitialValue, setFavouritesInitialValue] = useState(false);
   const [favourites, setFavourites] = useState(false);
   const dialogRef = useRef(null);
@@ -17,16 +20,20 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
     : money;
 
   useEffect(() => {
+    if (user?.cart?.includes(id)) {
+      setCartInitialValue(true);
+    } else {
+      setCartInitialValue(false);
+    }
+  }, [user, id]);
+
+  useEffect(() => {
     if (user?.favourites?.includes(id)) {
       setFavouritesInitialValue(true);
     } else {
       setFavouritesInitialValue(false);
     }
   }, [user, id]);
-
-  useEffect(() => {
-    setFavouritesInitialValue(favourites);
-  }, [favourites]);
 
   async function handleFavourites(like) {
     if (!user) {
@@ -52,12 +59,28 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
     }
   }
 
-  function handleCart() {
+  async function handleCart(cart) {
     if (!user) {
       handleModal();
       return;
     }
-    console.log("add to cart");
+    setCart(cart);
+    try {
+      let response;
+      if (!cart) {
+        response = await removeFromCart(user.email, id);
+      } else {
+        response = await addToCart(user.email, id);
+      }
+      if (response.found) {
+        setUser((prevState) => ({
+          ...prevState,
+          cart: response.cart,
+        }));
+      }
+    } catch (error) {
+      console.log("error");
+    }
     handleModal();
   }
 
@@ -108,13 +131,14 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
           style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
           src={icon}
         />
-        <p
+        <span
           className={`bg-black text-white text-center p-2 text-lg font-medium absolute w-full bottom-0 cursor-pointer
           ${visible ? "block" : "hidden"}`}
-          onClick={handleCart}
+          onClick={() => handleCart(!cartInitialValue)}
         >
-          Add To Cart
-        </p>
+          {!cartInitialValue && <p>Add To Cart</p>}
+          {cartInitialValue && <p>Remove From Cart</p>}
+        </span>
       </div>
       <span className="flex flex-col gap-1 pt-3">
         <p className="color-black font-bold">{title}</p>

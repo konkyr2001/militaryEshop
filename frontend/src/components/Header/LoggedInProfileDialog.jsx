@@ -9,6 +9,7 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
   function logout() {
     setIsLoading(true);
     localStorage.setItem("remember", false);
+    localStorage.removeItem("rememberEmail");
     setTimeout(() => {
       location.reload();
       setIsLoading(false);

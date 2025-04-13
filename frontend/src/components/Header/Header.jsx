@@ -48,9 +48,10 @@ function Header({ user }) {
               <p className="absolute -right-1 top-4">{user?.favourites?.length}</p>
             )}
           </li>
-          <li className="h-[30px] flex items-center">
+          <li className="h-[30px] flex items-center relative">
             {/* <i className="fa-solid fa-cart-shopping"></i> */}
             <img className="h-[25px] object-cover pointer" src={shoppingCartImg} />
+            <p className="absolute -right-1 top-4">{user?.cart?.length}</p>
           </li>
           <li className="h-[30px] flex items-center relative">
             {/* <i className="fa-solid fa-user"></i> */}

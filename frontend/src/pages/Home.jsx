@@ -19,15 +19,14 @@ function Home() {
   // when component get opened it checks if the user is remembered and log him in
   useEffect(() => {
     async function getRememberedUser() {
-      if (localStorage.getItem("remember") === "true") {
-        const email = localStorage.getItem("rememberEmail");
-        console.log(email);
-        try {
-          const currentUser = await getUser(email);
-          setUser(currentUser);
-        } catch (error) {
-          console.error("Failed to fetch user:", error);
-        }
+      // if rememberEmail doesnt exists then it returns null = no user
+      const email = localStorage.getItem("rememberEmail");
+      try {
+        const currentUser = await getUser(email);
+        console.log("currentUser: " + currentUser);
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
       }
     }
     getRememberedUser();
@@ -37,13 +36,13 @@ function Home() {
   // logs in the user or displays the default home page
   useEffect(() => {
     if (location.state) {
-      const { email, password, role, remember, favourites } = location.state;
-
+      const { email, password, role, remember, favourites, cart } = location.state;
       setUser({
         email,
         password,
         role,
         favourites,
+        cart,
       });
 
       if (remember) {
