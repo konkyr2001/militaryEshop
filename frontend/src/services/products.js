@@ -15,4 +15,19 @@ async function getAllProducts() {
   }
 }
 
-export { getAllProducts };
+async function getProductsById(ids) {
+  try {
+    const promises = ids.map(async (id) => {
+      const response = await fetch(`${url}/${id}`);
+      const product = await response.json();
+      return product;
+    });
+
+    const products = await Promise.all(promises);
+    return products;
+  } catch (error) {
+    return null;
+  }
+}
+
+export { getAllProducts, getProductsById };

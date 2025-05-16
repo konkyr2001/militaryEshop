@@ -27,3 +27,7 @@ Things to do:
 
 - Responsive
 - User's authentication (MAYBE)
+
+-BUGS:
+
+- Images are not displayed

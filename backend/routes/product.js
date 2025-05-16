@@ -15,21 +15,22 @@ router.get("/", async (req, res) => {
 router.get("/defaults", async (req, res) => {
   const product1 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "5",
     ratingAmount: "88",
     icon: "white-shoe.png",
   });
   const product2 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "5",
     ratingAmount: "88",
     icon: "red-shoe.png",
   });
   const product3 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "1160",
+    oldPrice: "1160",
+    currentPrice: "754",
     discount: "35",
     rating: "5",
     ratingAmount: "75",
@@ -37,21 +38,22 @@ router.get("/defaults", async (req, res) => {
   });
   const product4 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "4",
     ratingAmount: "88",
     icon: "blue-shoe.png",
   });
   const product5 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "5",
     ratingAmount: "88",
     icon: "cyan-shoe.png",
   });
   const product6 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    oldPrice: "160",
+    currentPrice: "104",
     rating: "5",
     discount: "35",
     ratingAmount: "75",
@@ -59,14 +61,14 @@ router.get("/defaults", async (req, res) => {
   });
   const product7 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "5",
     ratingAmount: "88",
     icon: "red-shoe.png",
   });
   const product8 = new Product({
     title: "HAVIT HV-G92 Gamepad",
-    money: "160",
+    currentPrice: "160",
     rating: "5",
     ratingAmount: "88",
     icon: "white-shoe.png",
@@ -85,6 +87,18 @@ router.get("/defaults", async (req, res) => {
     res.status(201).json({ newUser1 });
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

@@ -7,7 +7,17 @@ import { addToFavourites, removeFromFavourites } from "../../services/user";
 import { addToCart, removeFromCart } from "../../services/user";
 import "like-effects";
 
-function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, paddingTop }) {
+function Item({
+  id,
+  icon,
+  title,
+  oldPrice,
+  currentPrice,
+  discount,
+  ratingValue,
+  ratingAmount,
+  paddingTop,
+}) {
   const { user, setUser } = useContext(UserContext);
   const [visible, setVisible] = useState(false);
   const [cartInitialValue, setCartInitialValue] = useState(false);
@@ -16,8 +26,8 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
   const [favourites, setFavourites] = useState(false);
   const dialogRef = useRef(null);
   const discountedPrice = discount
-    ? Number(money) - (Number(money) * Number(discount)) / 100
-    : money;
+    ? Number(oldPrice) - (Number(oldPrice) * Number(discount)) / 100
+    : currentPrice;
 
   useEffect(() => {
     if (user?.cart?.includes(id)) {
@@ -102,7 +112,6 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
         onMouseLeave={() => setVisible(false)}
         style={{ paddingTop }}
       >
-        {id}
         <span className="absolute right-5 top-4 flex justify-center items-center w-[30px] h-[30px] rounded-1/2">
           <like-effects
             style={{ cursor: "default" }}
@@ -145,10 +154,10 @@ function Item({ id, icon, title, money, discount, ratingValue, ratingAmount, pad
         {discount && (
           <p>
             <span className="text-red-500 font-bold">${discountedPrice}</span>
-            <span className="ml-4 line-through">${money}</span>
+            <span className="ml-4 line-through">${oldPrice}</span>
           </p>
         )}
-        {!discount && <p>${money}</p>}
+        {!discount && <p>${currentPrice}</p>}
         <span className="flex">
           <Rating readonly={true} initialValue={ratingValue} />
           <span className="mt-[5px] ml-1 text-sm">({ratingAmount})</span>

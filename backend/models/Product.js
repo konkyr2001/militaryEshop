@@ -5,7 +5,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  money: {
+  oldPrice: {
+    type: String,
+  },
+  currentPrice: {
     type: String,
     required: true,
   },
@@ -26,7 +29,7 @@ const productSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
-    default: "0",
+    default: 0,
   },
 });
 

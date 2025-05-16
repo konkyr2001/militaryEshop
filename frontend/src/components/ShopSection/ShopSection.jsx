@@ -1,12 +1,9 @@
-import shoe1 from "../../assets/shoes/white-shoe.png";
-import shoe2 from "../../assets/shoes/red-shoe.png";
-import shoe3 from "../../assets/shoes/cyan-shoe.png";
-import shoe4 from "../../assets/shoes/blue-shoe.png";
 import Item from "../Shared/Item";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../../services/products";
 
-const _SHOEPATH = "../../assets/shoes/";
+const _SHOEPATH = "/src/assets/shoes/";
+// const _SHOEPATH = "../../assets/shoes/";
 
 function ShopSection() {
   const [products, setProducts] = useState([]);
@@ -49,7 +46,8 @@ function ShopSection() {
                   id={product.id}
                   icon={`${_SHOEPATH}${product.icon}`}
                   title={product.title}
-                  money={product.money}
+                  oldPrice={product.oldPrice}
+                  currentPrice={product.currentPrice}
                   discount={product.discount}
                   ratingValue={product.rating}
                   ratingAmount={product.ratingAmount}

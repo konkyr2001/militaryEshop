@@ -32,7 +32,7 @@ function BestSelling() {
             <Item
               icon={shoe1}
               title="HAVIT HV-G92 Gamepad"
-              money="160"
+              currentPrice="160"
               ratingValue={5}
               ratingAmount={88}
             />
@@ -41,7 +41,7 @@ function BestSelling() {
             <Item
               icon={shoe2}
               title="HAVIT HV-G92 Gamepad"
-              money="160"
+              currentPrice="160"
               ratingValue={5}
               ratingAmount={88}
               paddingTop={"40px"}
@@ -51,7 +51,7 @@ function BestSelling() {
             <Item
               icon={shoe3}
               title="HAVIT HV-G92 Gamepad"
-              money="1160"
+              currentPrice="1160"
               ratingValue={5}
               ratingAmount={88}
             />
@@ -60,7 +60,7 @@ function BestSelling() {
             <Item
               icon={shoe4}
               title="HAVIT HV-G92 Gamepad"
-              money="160"
+              currentPrice="160"
               discount="35"
               ratingValue={4}
               ratingAmount={75}

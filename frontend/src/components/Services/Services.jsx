@@ -22,7 +22,7 @@ function Icons() {
           <IconsItem
             icon="fa-solid fa-check"
             title="MONEY BACK GUARANTEE"
-            text="We return money within 30 days"
+            text="We return currentPrice within 30 days"
           />
         </li>
       </ul>
