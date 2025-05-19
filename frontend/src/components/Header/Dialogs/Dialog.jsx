@@ -1,26 +1,25 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { getProductsById } from "../../services/products";
+import { getProductsById } from "../../../services/products";
 import { Rating } from "react-simple-star-rating";
-import { removeFromCart, removeFromFavourites } from "../../services/user";
-import { UserContext } from "../../App";
+import { removeFromFavourites } from "../../../services/user";
+import { UserContext } from "../../../App";
 const _SHOEPATH = "/src/assets/shoes/";
 
-function CartDialog({ imageRef, setIsDialogOpen, cart }) {
+function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, modalType, icon }) {
   const { user, setUser } = useContext(UserContext);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const divRef = useRef();
-
   useEffect(() => {
     async function getProducts() {
       setLoading(true);
-      const products = await getProductsById(cart);
-      setCartProducts(products);
+      const products = await getProductsById(productsList);
+      setProducts(products);
       setLoading(false);
     }
 
     getProducts();
-  }, [cart]);
+  }, [productsList]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -42,12 +41,20 @@ function CartDialog({ imageRef, setIsDialogOpen, cart }) {
 
   async function removeProduct(id) {
     try {
-      const response = await removeFromCart(user.email, id);
+      const type = modalType.toLowerCase();
+      const response = await remove(user.email, id);
       if (response.found) {
-        setUser((prevState) => ({
-          ...prevState,
-          cart: response.cart,
-        }));
+        if (type === "favourites") {
+          setUser((prevState) => ({
+            ...prevState,
+            favourites: response.favourites,
+          }));
+        } else {
+          setUser((prevState) => ({
+            ...prevState,
+            cart: response.cart,
+          }));
+        }
       }
     } catch (error) {
       console.log("error");
@@ -60,19 +67,21 @@ function CartDialog({ imageRef, setIsDialogOpen, cart }) {
   return (
     <div ref={divRef} className="absolute top-[50px] -right-10 z-50 bg-white shadow-md rounded-lg">
       <div className="triangle-up border-b-gray-300 border-b-[15px] absolute right-[38px] -top-[0.9rem]"></div>
-      <div className="p-5 border border-gray-300 rounded-lg min-w-64 max-w-md w-full">
-        {cartProducts.length === 0 ? (
-          <p className="text-base text-center">No products added to cart yet!</p>
+      <div className="p-5 border border-gray-300 rounded-lg min-w-64 max-w-md">
+        {products.length === 0 ? (
+          <p className="text-base text-center">{emptyText}</p>
         ) : (
-          <h2 className="font-bold">Your Cart ({cartProducts.length})</h2>
+          <h2 className="font-bold">
+            Your {modalType} ({products.length})
+          </h2>
         )}
         <ul className="flex flex-col gap-4 max-h-[380px] overflow-auto pr-5">
-          {cartProducts.map((product, index) => {
+          {products.map((product, index) => {
             return (
               <li className="flex items-center gap-0 relative" key={product.id}>
                 <span className="absolute cursor-pointer right-1 mb-[10px] mt-2">
                   <i
-                    className={`fa-trash fa-solid text-gray-500 hover:text-orange-500 text-base`}
+                    className={`${icon}`}
                     slot="checked"
                     onClick={() => removeProduct(product.id)}
                   ></i>
@@ -96,14 +105,16 @@ function CartDialog({ imageRef, setIsDialogOpen, cart }) {
             );
           })}
         </ul>
-        <div className="w-full flex items-center">
-          <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-            ORDER NOW ({cartProducts.length})
-          </button>
-        </div>
+        {modalType === "Cart" && products.length > 0 && (
+          <div className="w-full flex items-center">
+            <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
+              ORDER NOW ({products.length})
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default CartDialog;
+export default Dialog;

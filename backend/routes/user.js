@@ -44,7 +44,6 @@ router.put("/favourites/add/:email", async (req, res) => {
 });
 
 router.put("/favourites/remove/:email", async (req, res) => {
-  console.log("asd");
   const email = req.params.email;
   const productId = req.body.productId;
   try {
@@ -81,7 +80,9 @@ router.put("/cart/add/:email", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user.cart.includes(productId)) {
       user.cart.push(productId);
+      console.log("mpike1: ", user);
       await user.save();
+      console.log("mpike2");
       console.log("add user save");
       return res.status(200).json(user);
     } else {
@@ -124,6 +125,7 @@ router.post("/signup", async (req, res) => {
 
   try {
     console.log("mpike");
+    console.log(user);
     const newUser = await user.save();
     console.log(newUser);
     res.status(201).json({ newUser });

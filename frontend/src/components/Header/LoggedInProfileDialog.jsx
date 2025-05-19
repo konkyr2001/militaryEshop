@@ -10,6 +10,9 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
     setIsLoading(true);
     localStorage.setItem("remember", false);
     localStorage.removeItem("rememberEmail");
+    const info = JSON.parse(localStorage.getItem("info"));
+    const newInfo = info.item;
+    localStorage.setItem(info, JSON.stringify(newInfo));
     setTimeout(() => {
       location.reload();
       setIsLoading(false);

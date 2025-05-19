@@ -1,4 +1,5 @@
 import { useState, useRef, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../App";
 import { Rating } from "react-simple-star-rating";
 import "./Item.css";
@@ -17,6 +18,10 @@ function Item({
   ratingValue,
   ratingAmount,
   paddingTop,
+  containerClass,
+  listClass,
+  titleClass,
+  singlePost,
 }) {
   const { user, setUser } = useContext(UserContext);
   const [visible, setVisible] = useState(false);
@@ -25,6 +30,19 @@ function Item({
   const [favouritesInitialValue, setFavouritesInitialValue] = useState(false);
   const [favourites, setFavourites] = useState(false);
   const dialogRef = useRef(null);
+  const info = {
+    id,
+    icon,
+    title,
+    oldPrice,
+    currentPrice,
+    discount,
+    ratingValue,
+    ratingAmount,
+    favouritesInitialValue,
+    cartInitialValue,
+  };
+
   const discountedPrice = discount
     ? Number(oldPrice) - (Number(oldPrice) * Number(discount)) / 100
     : currentPrice;
@@ -103,11 +121,17 @@ function Item({
       : dialogRef.current.showModal();
   }
 
+  if (!containerClass) {
+    containerClass =
+      "bg-gray-200 h-[250px] flex justify-center items-center relative flex-1 basis-[21%]";
+  }
+  if (!listClass) {
+    listClass = "flex flex-col gap-1 pt-3";
+  }
   return (
     <>
       <div
-        className="bg-gray-200 h-[250px] flex justify-center items-center
-        relative flex-1 basis-[21%]"
+        className={containerClass}
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
         style={{ paddingTop }}
@@ -119,12 +143,12 @@ function Item({
             onClick={(e) => e.preventDefault()}
           >
             <i
-              className={`fa-heart fa-regular text-red-500 text-2xl`}
+              className={`fa-heart fa-regular text-red-500 text-2xl z-20`}
               slot="unchecked"
               onClick={() => handleFavourites(true)}
             ></i>
             <i
-              className={`fa-heart fa-solid text-red-500 text-2xl`}
+              className={`fa-heart fa-solid text-red-500 text-2xl z-20`}
               slot="checked"
               onClick={() => handleFavourites(false)}
             ></i>
@@ -135,22 +159,46 @@ function Item({
             -{discount}%
           </span>
         )}
-        <img
-          className="w-[200px]"
-          style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
-          src={icon}
-        />
+        {singlePost ? (
+          <img
+            className="w-[200px]"
+            style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
+            src={icon}
+          />
+        ) : (
+          <Link
+            to={`/product/${id}`}
+            onClick={() => localStorage.setItem("info", JSON.stringify(info))}
+          >
+            <img
+              className="w-[200px] pointer"
+              style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
+              src={icon}
+            />
+          </Link>
+        )}
+
         <span
           className={`bg-black text-white text-center p-2 text-lg font-medium absolute w-full bottom-0 cursor-pointer
           ${visible ? "block" : "hidden"}`}
           onClick={() => handleCart(!cartInitialValue)}
         >
-          {!cartInitialValue && <p>Add To Cart</p>}
-          {cartInitialValue && <p>Remove From Cart</p>}
+          {!cartInitialValue && <p className="hover:underline">Add To Cart</p>}
+          {cartInitialValue && <p className="hover:underline">Remove From Cart</p>}
         </span>
       </div>
-      <span className="flex flex-col gap-1 pt-3">
-        <p className="color-black font-bold">{title}</p>
+      <span className={listClass}>
+        {singlePost ? (
+          <p className={`color-black font-bold ${titleClass}`}>{title}</p>
+        ) : (
+          <Link
+            to={`/product/${id}`}
+            onClick={() => localStorage.setItem("info", JSON.stringify(info))}
+          >
+            <p className={`color-black font-bold hover:underline ${titleClass}`}>{title}</p>
+          </Link>
+        )}
+
         {discount && (
           <p>
             <span className="text-red-500 font-bold">${discountedPrice}</span>

@@ -94,8 +94,10 @@ async function addToCart(email, productId) {
         productId,
       }),
     });
-    console.log(response);
+
+    // console.log(response);
     if (response.ok) {
+      console.log(productId);
       const data = await response.json();
       return {
         found: true,

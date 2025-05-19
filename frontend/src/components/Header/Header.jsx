@@ -4,11 +4,14 @@ import profileImg from "../../assets/icons/profile-svgrepo-com.svg";
 import shoppingCartImg from "../../assets/icons/shopping-cart-01-svgrepo-com.svg";
 import ProfileDialog from "./ProfileDialog";
 import Logo from "./Logo";
-import FavouritesDialog from "./FavouritesDialog";
-import CartDialog from "./CartDialog";
+import FavouritesDialog from "./Dialogs/FavouritesDialog";
+import CartDialog from "./Dialogs/CartDialog";
 import LoggedInProfileDialog from "./LoggedInProfileDialog";
+import NoAccountModal from "./Dialogs/NoAccountModal";
 
 function Header({ user }) {
+  const [noAccountDialog1, setNoAccountDialog1] = useState(false);
+  const [noAccountDialog2, setNoAccountDialog2] = useState(false);
   const [favouriteDialogOpen, setFavouriteDialogOpen] = useState(false);
   const [cartDialogOpen, setCartDialogOpen] = useState(false);
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
@@ -20,6 +23,8 @@ function Header({ user }) {
   function handleFavourties() {
     if (user) {
       setFavouriteDialogOpen(!favouriteDialogOpen);
+    } else {
+      setNoAccountDialog1(!noAccountDialog1);
     }
     return;
   }
@@ -27,6 +32,8 @@ function Header({ user }) {
   function handleCart() {
     if (user) {
       setCartDialogOpen(!cartDialogOpen);
+    } else {
+      setNoAccountDialog2(!noAccountDialog2);
     }
   }
   return (
@@ -77,6 +84,9 @@ function Header({ user }) {
                 favourites={user.favourites}
               />
             )}
+            {noAccountDialog1 && (
+              <NoAccountModal imageRef={favouritesImageRef} setIsDialogOpen={setNoAccountDialog1} />
+            )}
           </li>
           <li className="h-[30px] flex items-center relative">
             <img
@@ -94,6 +104,9 @@ function Header({ user }) {
                 setIsDialogOpen={setCartDialogOpen}
                 cart={user.cart}
               />
+            )}
+            {noAccountDialog2 && (
+              <NoAccountModal imageRef={cartImageRef} setIsDialogOpen={setNoAccountDialog2} />
             )}
           </li>
           <li className="h-[30px] flex items-center relative">

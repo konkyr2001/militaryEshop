@@ -16,22 +16,6 @@ function Home() {
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
 
-  // when component get opened it checks if the user is remembered and log him in
-  useEffect(() => {
-    async function getRememberedUser() {
-      // if rememberEmail doesnt exists then it returns null = no user
-      const email = localStorage.getItem("rememberEmail");
-      try {
-        const currentUser = await getUser(email);
-        console.log("currentUser: " + currentUser);
-        setUser(currentUser);
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      }
-    }
-    getRememberedUser();
-  }, []);
-
   // every time the component gets called with a parameter, it either
   // logs in the user or displays the default home page
   useEffect(() => {
@@ -44,7 +28,6 @@ function Home() {
         favourites,
         cart,
       });
-
       if (remember) {
         localStorage.setItem("remember", true);
         localStorage.setItem("rememberEmail", email);
@@ -53,12 +36,29 @@ function Home() {
         localStorage.setItem("remember", false);
         localStorage.removeItem("rememberEmail");
       }
-      console.log(location.state.remember);
+      console.log("Remember me: " + location.state.remember);
     }
   }, [location.state]);
+
+  // when component get opened it checks if the user is remembered and log him in
+  useEffect(() => {
+    async function getRememberedUser() {
+      // if rememberEmail doesnt exists then it returns null = no user
+      const email = localStorage.getItem("rememberEmail");
+      try {
+        const currentUser = await getUser(email);
+        console.log("currentUser: ", currentUser);
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
+    }
+    getRememberedUser();
+  }, []);
+
   return (
     <>
-      <Header user={user} />
+      {/* <Header user={user} /> */}
       <div className="">
         <div className="w-[90%] m-auto">
           <ShopAll />
