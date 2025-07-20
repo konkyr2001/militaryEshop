@@ -1,7 +1,1 @@
-POST http://localhost:3000/users/signup
-Content-Type: "application/json"
-{
-  "email":"konkyr2001@hotmail.com2",
-  "password":"1",
-  "role": "customer",
-}
+GET http://localhost:3000/products

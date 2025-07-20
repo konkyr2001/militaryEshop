@@ -57,7 +57,7 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
               {user.role}
             </li>
             <li className="hover:underline decoration-blue-500 cursor-pointer">
-              <Link>My Account</Link>
+              <Link to={`/account/${user.id}`}>My Account</Link>
             </li>
             <li className="hover:underline decoration-blue-500 cursor-pointer">
               <Link>Orders</Link>
@@ -67,12 +67,6 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
                 <Link>My Products</Link>
               </li>
             )}
-            <li className="hover:underline decoration-blue-500 cursor-pointer">
-              <Link>Settings</Link>
-            </li>
-            <li className="hover:underline decoration-blue-500 cursor-help">
-              <Link>Help</Link>
-            </li>
             <li className="hover:underline decoration-red-500 text-red-500 cursor-pointer">
               <Link onClick={logout}>Log out</Link>
             </li>

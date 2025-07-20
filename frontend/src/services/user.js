@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/users";
+const url = "https://militaryeshop-1.onrender.com/users";
 async function checkUser(email, password) {
   try {
     const response = await fetch(`${url}/${email}`);
@@ -95,9 +95,8 @@ async function addToCart(email, productId) {
       }),
     });
 
-    // console.log(response);
+    console.log(response);
     if (response.ok) {
-      console.log(productId);
       const data = await response.json();
       return {
         found: true,

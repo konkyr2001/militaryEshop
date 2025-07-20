@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  productsCreated: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
   favourites: [
     {
       type: String,
@@ -23,7 +29,7 @@ const userSchema = new mongoose.Schema({
   cart: [
     {
       type: String,
-      unique: true,
+      ref: "Product",
     },
   ],
 });

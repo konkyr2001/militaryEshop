@@ -20,8 +20,9 @@ function Home() {
   // logs in the user or displays the default home page
   useEffect(() => {
     if (location.state) {
-      const { email, password, role, remember, favourites, cart } = location.state;
+      const { id, email, password, role, remember, favourites, cart } = location.state;
       setUser({
+        id,
         email,
         password,
         role,

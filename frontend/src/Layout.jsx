@@ -8,7 +8,9 @@ function Layout() {
   console.log("pathname: ", location.pathname);
   return (
     <>
-      {!(location.pathname === "/signup") && <Header user={user} />}
+      {!(location.pathname === "/signup") && !(location.pathname === "/login") && (
+        <Header user={user} />
+      )}
       <Outlet />
     </>
   );

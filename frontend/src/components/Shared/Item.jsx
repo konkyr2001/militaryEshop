@@ -138,7 +138,7 @@ function Item({
       >
         <span className="absolute right-5 top-4 flex justify-center items-center w-[30px] h-[30px] rounded-1/2">
           <like-effects
-            style={{ cursor: "default" }}
+            style={{ cursor: "default", zIndex: "50" }}
             checked={favouritesInitialValue}
             onClick={(e) => e.preventDefault()}
           >
