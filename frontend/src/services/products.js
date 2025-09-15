@@ -1,4 +1,5 @@
-const url = "https://militaryeshop-1.onrender.com/products";
+// const url = "https://militaryeshop-1.onrender.com/products";
+const url = "http://localhost:3000/products";
 
 async function getAllProducts() {
   try {

@@ -1,4 +1,6 @@
-const url = "https://militaryeshop-1.onrender.com/users";
+// const url = "https://militaryeshop-1.onrender.com/users";
+const url = "http://localhost:3000/users";
+
 async function checkUser(email, password) {
   try {
     const response = await fetch(`${url}/${email}`);
@@ -26,6 +28,35 @@ async function getUser(email) {
     const response = await fetch(`${url}/${email}`);
     const data = await response.json();
     return data;
+  } catch (error) {
+    throw error.message;
+  }
+}
+
+async function updateUser(oldUser, newUser) {
+  try {
+    const response = await fetch(`${url}/updateUser`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        oldUser,
+        newUser,
+      }),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return {
+        found: true,
+        user: {
+          email: data.email,
+          password: data.password,
+        },
+      };
+    }
+    return false;
   } catch (error) {
     throw error.message;
   }
@@ -165,6 +196,7 @@ async function signupUser(email, password, role) {
 export {
   checkUser,
   getUser,
+  updateUser,
   addToFavourites,
   removeFromFavourites,
   addToCart,

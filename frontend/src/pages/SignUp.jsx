@@ -28,6 +28,9 @@ const SignUp = () => {
         setFormError("SELECT");
         return false;
       }
+      if (password.length < 5) {
+        setFormError("PASSWORD");
+      }
     }
     setFormError(false);
     return true;
@@ -76,6 +79,11 @@ const SignUp = () => {
             )}
             {formError === "SELECT" && (
               <p className="text-red-500 mb-3 tracking-wider">Please select a role</p>
+            )}
+            {formError === "PASSWORD" && (
+              <p className="text-red-500 mb-3 tracking-wider">
+                Password must be 5 characters minimum
+              </p>
             )}
             <fieldset className="flex justify-center items-center flex-col gap-5">
               <EmailInput

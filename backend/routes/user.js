@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Product = require("../models/Product");
+// const bcrypt = require("bcryptjs");
 
 router.get("/:email", async (req, res) => {
   const email = req.params.email;
@@ -13,6 +14,19 @@ router.get("/:email", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+
+router.put("/updateUser", async (req, res) => {
+  const { oldUser, newUser } = req.body;
+  const user = await User.findOne({ email: oldUser.email });
+  if (newUser.email) {
+    user.email = newUser.email;
+  }
+  if (newUser.password) {
+    user.password = newUser.password;
+  }
+  await user.save();
+  return res.status(200).json(user);
 });
 
 router.put("/favourites/add/:email", async (req, res) => {

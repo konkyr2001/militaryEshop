@@ -9,7 +9,11 @@ import CartDialog from "./Dialogs/CartDialog";
 import LoggedInProfileDialog from "./LoggedInProfileDialog";
 import NoAccountModal from "./Dialogs/NoAccountModal";
 
-function Header({ user }) {
+function Header() {
+  const [user, setUser] = useState({
+    email: localStorage.getItem("rememberEmail"),
+    password: localStorage.getItem("rememberPassword"),
+  });
   const [noAccountDialog1, setNoAccountDialog1] = useState(false);
   const [noAccountDialog2, setNoAccountDialog2] = useState(false);
   const [favouriteDialogOpen, setFavouriteDialogOpen] = useState(false);

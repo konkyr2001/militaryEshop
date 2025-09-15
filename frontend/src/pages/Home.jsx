@@ -29,9 +29,11 @@ function Home() {
         favourites,
         cart,
       });
+
       if (remember) {
         localStorage.setItem("remember", true);
         localStorage.setItem("rememberEmail", email);
+        localStorage.setItem("rememberPassword", password);
         console.log(localStorage.getItem("rememberEmail"));
       } else {
         localStorage.setItem("remember", false);
@@ -54,6 +56,7 @@ function Home() {
         console.error("Failed to fetch user:", error);
       }
     }
+    console.log(localStorage);
     getRememberedUser();
   }, []);
 

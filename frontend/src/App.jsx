@@ -5,7 +5,7 @@ import Product from "./pages/Product";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Account from "./pages/Account";
+import Account from "./pages/Account/Account";
 import Layout from "./Layout";
 import { useState } from "react";
 import React from "react";
@@ -22,6 +22,7 @@ function App() {
               <Route path="product/:id" element={<Product />} />
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<SignUp />} />
+              <Route path="account/" element={<Account />} />
               <Route path="account/:id" element={<Account />} />
               <Route path="*" element={<NoPage />} />
             </Route>

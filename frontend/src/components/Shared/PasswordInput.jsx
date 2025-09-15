@@ -28,10 +28,12 @@ const PasswordInput = forwardRef(({ placeholder, className, ...props }, ref) => 
         required
         {...props}
       />
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 flex justify-center items-center">
-        <i className="vertical-line h-5"></i>
-        <i onClick={handlePassword} className={`fa-regular ${icon} cursor-pointer`}></i>
-      </div>
+      {!props.hideeye && (
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex justify-center items-center">
+          <i className="vertical-line h-5"></i>
+          <i onClick={handlePassword} className={`fa-regular ${icon} cursor-pointer`}></i>
+        </div>
+      )}
     </span>
   );
 });
