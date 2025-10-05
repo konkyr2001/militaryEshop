@@ -7,9 +7,9 @@ import Alert from "@mui/material/Alert";
 import { UserContext } from "../../App";
 
 const MyAccountSection = ({ currentUser }) => {
-  const [email, setEmail] = useState(currentUser.email);
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [emailHover, setEmailHover] = useState(false);
-  const [password, setPassword] = useState(currentUser.password);
   const [passwordHover, setPasswordHover] = useState(false);
   const [disableEmail, setDisableEmail] = useState(true);
   const emailRef = useRef(null);
@@ -25,6 +25,14 @@ const MyAccountSection = ({ currentUser }) => {
     email: currentUser.email,
     password: currentUser.password,
   };
+
+  // RUNS WHEN CURRENT USER CHANGES (HEADER TAKES A FEW MILISECONDS)
+  // SO THIS EXECUTES SECOND TIME AND CORRECTS THE NULL VALUES
+  useEffect(() => {
+    setEmail(currentUser.email);
+    setPassword(currentUser.password);
+    console.log(currentUser)
+  }, [currentUser]);
 
   useEffect(() => {
     if (!alert) return;
@@ -73,7 +81,6 @@ const MyAccountSection = ({ currentUser }) => {
       }
       if (password.length < 5) {
         setFormError("PASSWORD");
-        console.log("mpike");
         return false;
       }
 
@@ -83,7 +90,6 @@ const MyAccountSection = ({ currentUser }) => {
       if (password !== initialUser.password) updates.password = password;
 
       const userUpdate = await updateUser(initialUser, updates);
-      console.log(userUpdate);
       if (userUpdate.found) {
         setFormError("");
         setAlert("SUCCESS");
@@ -92,7 +98,6 @@ const MyAccountSection = ({ currentUser }) => {
           email: userUpdate.user.email,
           password: userUpdate.user.password,
         });
-        console.log(userUpdate);
       }
     } catch (error) {
       console.log(error.message);
@@ -124,11 +129,11 @@ const MyAccountSection = ({ currentUser }) => {
             onClick={changeEmail}
             className={`absolute top-[23px] right-0 w-[40px] h-[40px] flex items-center justify-center pointer ${emailHover ? "visible" : "hidden"}`}
           >
-            {disableEmail && <i title="edit" className={`fa-solid fa-gears`}></i>}
+            {disableEmail && <i title="Edit" className={`fa-solid fa-gears`}></i>}
             {!disableEmail && (
               <i
                 onClick={() => setEmail(initialUser.email)}
-                title="submit"
+                title="Cancel"
                 className={`fa-solid fa-xmark text-red-500 text-xl w-full h-full flex items-center justify-center`}
               ></i>
             )}
@@ -157,14 +162,14 @@ const MyAccountSection = ({ currentUser }) => {
             onMouseOver={() => setPasswordHover(true)}
             onMouseOut={() => setPasswordHover(false)}
             onClick={changePassword}
-            title="edit"
+            title="Edit"
             className={`absolute top-[23px] right-0 w-[40px] h-[40px] flex items-center justify-center pointer ${passwordHover ? "visible" : "hidden"}`}
           >
             {disablePassword && <i className={`fa-solid fa-gears`}></i>}
             {!disablePassword && (
               <i
                 onClick={() => setPassword(initialUser.password)}
-                title="submit"
+                title="Cancel"
                 className={`fa-solid fa-xmark text-red-500 text-xl w-full h-full flex items-center justify-center`}
               ></i>
             )}
@@ -175,6 +180,7 @@ const MyAccountSection = ({ currentUser }) => {
         </span>
         <SubmitButton
           buttonText="Update Account Information"
+          title="Submit"
           className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold hover:from-green-600 hover:to-green-700"
         />
       </fieldset>

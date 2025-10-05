@@ -55,13 +55,14 @@ const SignUp = () => {
               role,
               remember,
             },
+            replace: true
           });
         }, 500);
       } else {
         console.log("Something went wrong");
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   }
 

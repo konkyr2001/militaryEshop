@@ -94,9 +94,7 @@ router.put("/cart/add/:email", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user.cart.includes(productId)) {
       user.cart.push(productId);
-      console.log("mpike1: ", user);
       await user.save();
-      console.log("mpike2");
       console.log("add user save");
       return res.status(200).json(user);
     } else {

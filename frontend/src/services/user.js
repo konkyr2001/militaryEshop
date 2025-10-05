@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs-react";
+
 // const url = "https://militaryeshop-1.onrender.com/users";
 const url = "http://localhost:3000/users";
 
@@ -5,13 +7,13 @@ async function checkUser(email, password) {
   try {
     const response = await fetch(`${url}/${email}`);
     const data = await response.json();
+    const passwordCheck = await bcrypt.compare(password, data.password);
     if (response.ok) {
-      if (password === data.password) {
+      if (passwordCheck) {
+        data.password = password;
         return {
           found: true,
-          role: data.role,
-          favourites: data.favourites,
-          cart: data.cart,
+          data
         };
       }
       return {
@@ -27,6 +29,7 @@ async function getUser(email) {
   try {
     const response = await fetch(`${url}/${email}`);
     const data = await response.json();
+    console.log("get User: ", data);
     return data;
   } catch (error) {
     throw error.message;
@@ -181,7 +184,7 @@ async function signupUser(email, password, role) {
       },
       body: JSON.stringify({
         email,
-        hashedPassword,
+        password: hashedPassword,
         role,
       }),
     });

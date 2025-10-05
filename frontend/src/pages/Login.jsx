@@ -34,13 +34,10 @@ const Login = () => {
           setIsLoading(false);
           navigate("/", {
             state: {
-              email,
-              password,
-              role: userExist.role,
-              favourites: userExist.favourites,
-              cart: userExist.cart,
-              remember,
+              ...userExist.data,
+              remember
             },
+            replace: true,
           });
         }, 500);
       } else {

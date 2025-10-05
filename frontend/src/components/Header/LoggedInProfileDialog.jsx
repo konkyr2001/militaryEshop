@@ -9,9 +9,9 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
   function logout() {
     setIsLoading(true);
     localStorage.clear();
-    const info = JSON.parse(localStorage.getItem("info"));
-    const newInfo = info.item;
-    localStorage.setItem(info, JSON.stringify(newInfo));
+    // const info = JSON.parse(localStorage.getItem("info"));
+    // const newInfo = info.item;
+    // localStorage.setItem(info, JSON.stringify(newInfo));
     setTimeout(() => {
       location.reload();
       setIsLoading(false);

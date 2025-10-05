@@ -3,10 +3,7 @@ import { UserContext } from "../../App";
 import Tab from "./Tab";
 import MyAccountSection from "./MyAccountSection";
 const Account = () => {
-  const [user, setUser] = useState({
-    email: localStorage.getItem("rememberEmail"),
-    password: localStorage.getItem("rememberPassword"),
-  });
+  const { user, setUser } = useContext(UserContext);
   const [open, setOpen] = useState("1"); // first tab by default
 
   return (

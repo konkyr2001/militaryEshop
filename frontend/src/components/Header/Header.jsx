@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import profileImg from "../../assets/icons/profile-svgrepo-com.svg";
 import shoppingCartImg from "../../assets/icons/shopping-cart-01-svgrepo-com.svg";
 import ProfileDialog from "./ProfileDialog";
@@ -8,12 +8,11 @@ import FavouritesDialog from "./Dialogs/FavouritesDialog";
 import CartDialog from "./Dialogs/CartDialog";
 import LoggedInProfileDialog from "./LoggedInProfileDialog";
 import NoAccountModal from "./Dialogs/NoAccountModal";
+import { UserContext } from "../../App";
+import { getUser } from "../../services/user";
 
 function Header() {
-  const [user, setUser] = useState({
-    email: localStorage.getItem("rememberEmail"),
-    password: localStorage.getItem("rememberPassword"),
-  });
+  const { user, setUser } = useContext(UserContext);
   const [noAccountDialog1, setNoAccountDialog1] = useState(false);
   const [noAccountDialog2, setNoAccountDialog2] = useState(false);
   const [favouriteDialogOpen, setFavouriteDialogOpen] = useState(false);
@@ -23,6 +22,23 @@ function Header() {
   const favouritesImageRef = useRef(null);
   const cartImageRef = useRef(null);
   const profileImageRef = useRef(null);
+
+  // when component get opened it checks if the user is remembered and log him in
+  useEffect(() => {
+    async function getRememberedUser() {
+      // if rememberEmail doesnt exists then it returns null = no user
+      const email = localStorage.getItem("rememberEmail");
+      if (!email) return;
+      try {
+        const currentUser = await getUser(email);
+        currentUser.password = localStorage.getItem("rememberPassword");
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
+    }
+    getRememberedUser();
+  }, []);
 
   function handleFavourties() {
     if (user.email && user.password ) {

@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema({
       ref: "Product",
     },
   ],
+}, {
+  timestamps: true
 });
 
 userSchema.set("toJSON", {
