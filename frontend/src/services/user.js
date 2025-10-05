@@ -171,6 +171,9 @@ async function removeFromCart(email, productId) {
 
 async function signupUser(email, password, role) {
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(password);
+    console.log(hashedPassword);
     const response = await fetch(`${url}/signup`, {
       method: "POST",
       headers: {
@@ -178,7 +181,7 @@ async function signupUser(email, password, role) {
       },
       body: JSON.stringify({
         email,
-        password,
+        hashedPassword,
         role,
       }),
     });

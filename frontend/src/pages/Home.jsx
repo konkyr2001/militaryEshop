@@ -48,6 +48,7 @@ function Home() {
     async function getRememberedUser() {
       // if rememberEmail doesnt exists then it returns null = no user
       const email = localStorage.getItem("rememberEmail");
+      if (!email) return;
       try {
         const currentUser = await getUser(email);
         console.log("currentUser: ", currentUser);

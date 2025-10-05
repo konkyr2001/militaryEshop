@@ -25,7 +25,7 @@ function Header() {
   const profileImageRef = useRef(null);
 
   function handleFavourties() {
-    if (user) {
+    if (user.email && user.password ) {
       setFavouriteDialogOpen(!favouriteDialogOpen);
     } else {
       setNoAccountDialog1(!noAccountDialog1);
@@ -34,7 +34,7 @@ function Header() {
   }
 
   function handleCart() {
-    if (user) {
+    if (user.email && user.password ) {
       setCartDialogOpen(!cartDialogOpen);
     } else {
       setNoAccountDialog2(!noAccountDialog2);
@@ -120,10 +120,10 @@ function Header() {
               src={profileImg}
               onClick={(e) => setProfileDialogOpen((prevState) => !prevState)}
             />
-            {profileDialogOpen && !user && (
+            {profileDialogOpen && !user.email && !user.password && (
               <ProfileDialog imageRef={profileImageRef} setIsDialogOpen={setProfileDialogOpen} />
             )}
-            {profileDialogOpen && user && (
+            {profileDialogOpen && user.email && user.password && (
               <LoggedInProfileDialog
                 imageRef={profileImageRef}
                 setIsDialogOpen={setProfileDialogOpen}
