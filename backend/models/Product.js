@@ -5,10 +5,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dateCreated: {
-    type: String,
-    required: true,
-  },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -35,22 +31,24 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  comments: [
-    {
-      receiver: {
-        type: String,
-        required: true,
-      },
-      message: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  // comments: [
+  //   {
+  //     receiver: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //     message: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //   },
+  // ],
   likes: {
     type: Number,
     default: 0,
   },
+}, {
+  timestamps: true
 });
 
 productSchema.set("toJSON", {
