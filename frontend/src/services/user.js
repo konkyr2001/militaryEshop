@@ -38,6 +38,9 @@ async function getUser(email) {
 
 async function updateUser(oldUser, newUser) {
   try {
+    if (newUser.password) {
+      newUser.password = await bcrypt.hash(newUser.password, 10);
+    }
     const response = await fetch(`${url}/updateUser`, {
       method: "PUT",
       headers: {

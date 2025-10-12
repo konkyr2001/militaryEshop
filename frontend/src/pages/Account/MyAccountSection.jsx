@@ -96,11 +96,13 @@ const MyAccountSection = ({ currentUser }) => {
         setUser({
           ...user,
           email: userUpdate.user.email,
-          password: userUpdate.user.password,
+          password: password,
         });
+        localStorage.setItem("rememberEmail", email);
+        localStorage.setItem("rememberPassword", password);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   }
 
