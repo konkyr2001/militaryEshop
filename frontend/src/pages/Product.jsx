@@ -26,6 +26,11 @@ function Product() {
           singlePost={true}
         />
       </div>
+      <div className="flex">
+        <button className="bg-green-500 w-[90%] mx-auto mt-2 px-7 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
+          <i class="fa-solid fa-bolt text-yellow-300"></i> BUY NOW
+        </button>
+      </div>
       <div className="flex-1 text-gray-800 space-y-6 mt-16">
         <h2 className="text-4xl font-semibold border-b pb-2">Product Description</h2>
         <p className="leading-relaxed text-lg tracking-wide text-justify">

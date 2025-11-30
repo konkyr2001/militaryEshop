@@ -202,6 +202,31 @@ async function signupUser(email, password, role) {
   }
 }
 
+async function deleteUser(id) {
+  try {
+    const response = await fetch(`${url}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      return {
+        found: true,
+        data
+      };
+    } else {
+      return {
+        found: false
+      };
+    }
+  } catch (error) {
+    throw error.message;
+  }
+}
+
 export {
   checkUser,
   getUser,
@@ -211,4 +236,5 @@ export {
   addToCart,
   removeFromCart,
   signupUser,
+  deleteUser
 };

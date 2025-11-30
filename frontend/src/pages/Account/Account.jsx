@@ -23,7 +23,7 @@ const Account = () => {
               <i className="fa-solid fa-basket-shopping mr-2"></i>
               Orders
             </Tab>
-            {user && user.role === "customer" && (
+            {user && user.role === "seller" && (
               <Tab open={open} setOpen={setOpen} number="3">
                 <i className="fa-solid fa-shop mr-2"></i>
                 My Products

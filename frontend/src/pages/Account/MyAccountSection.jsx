@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import EmailInput from "../../components/Shared/EmailInput";
 import PasswordInput from "../../components/Shared/PasswordInput";
 import SubmitButton from "../../components/Shared/SubmitButton";
+import DeleteButton from "./DeleteButton";
 import { getUser, updateUser } from "../../services/user";
 import Alert from "@mui/material/Alert";
 import { UserContext } from "../../App";
@@ -184,6 +185,10 @@ const MyAccountSection = ({ currentUser }) => {
           buttonText="Update Account Information"
           title="Submit"
           className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold hover:from-green-600 hover:to-green-700"
+        />
+        <DeleteButton 
+          buttonText="Delete user permantly!"
+          currentUser={currentUser}
         />
       </fieldset>
     </form>

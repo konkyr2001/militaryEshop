@@ -44,28 +44,11 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
         className="absolute top-[50px] -right-10 z-50 bg-white shadow-md rounded-lg"
       >
         <div className="triangle-up border-b-gray-300 border-b-[15px] absolute right-9 -top-[0.9rem]"></div>
-        <div className="p-5 border border-gray-300 rounded-lg min-w-64">
+        <div className="p-5 border border-gray-300 rounded-lg min-w-52">
           <ul className="pl-2 flex flex-col gap-2">
-            <li
-              className={`text-black font-bold m-auto ${user.role === "seller" ? "text-red-300" : "text-blue-300"}`}
-            >
-              {user.email}
-              <br></br>
-              {user.password}
-              <br></br>
-              {user.role}
-            </li>
             <li className="hover:underline decoration-blue-500 cursor-pointer">
               <Link to={`/account/${user.id}`}>My Account</Link>
             </li>
-            <li className="hover:underline decoration-blue-500 cursor-pointer">
-              <Link>Orders</Link>
-            </li>
-            {user.role === "seller" && (
-              <li className="hover:underline decoration-blue-500 cursor-pointer">
-                <Link>My Products</Link>
-              </li>
-            )}
             <li className="hover:underline decoration-red-500 text-red-500 cursor-pointer">
               <Link onClick={logout}>Log out</Link>
             </li>

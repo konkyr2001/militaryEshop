@@ -25,7 +25,6 @@ const PasswordInput = forwardRef(({ placeholder, className, ...props }, ref) => 
         name="password"
         aria-label="Password"
         ref={ref}
-        required
         {...props}
       />
       {!props.hideeye && (

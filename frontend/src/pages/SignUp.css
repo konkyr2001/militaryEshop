@@ -1,3 +1,9 @@
 select.decorated option:hover {
   box-shadow: 0 0 10px 100px #0d181b inset;
 }
+
+.error-signup {
+  text-align: left;
+  color: red;
+  margin-left: 2px;
+}

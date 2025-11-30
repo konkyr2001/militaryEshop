@@ -12,7 +12,6 @@ const EmailInput = forwardRef(function EmailInput({ placeholder, className, ...p
       type="email"
       aria-label="Email"
       {...props}
-      required
     />
   );
 });
