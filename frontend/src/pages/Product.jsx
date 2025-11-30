@@ -1,22 +1,40 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../App";
+import { useParams, useLocation } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import Item from "../components/Shared/Item";
+import { getProductById } from "../services/products";
 
+const _SHOEPATH = "/src/assets/shoes/";
 function Product() {
-  const item = JSON.parse(localStorage.getItem("info"));
+  const { user, setUser } = useContext(UserContext);
+  const { id } = useParams();
+  const [item, setItem] = useState(null);
+  useEffect(() => {
+    async function getProduct() {
+      const product = await getProductById(id);
+      console.log(product)
+      setItem(product);
+    }
+
+    getProduct();
+  }, [id]);
+
+  if  (!item) {
+    return;
+  }
 
   return (
     <div className="w-3/5 m-auto mt-40">
       <div className="flex">
         <Item
           id={item.id}
-          icon={item.icon}
+          icon={`${_SHOEPATH}${item.icon}`}
           title={item.title}
           oldPrice={item.oldPrice}
           currentPrice={item.currentPrice}
           discount={item.discount}
-          ratingValue={item.ratingValue}
+          ratingValue={item.rating}
           ratingAmount={item.ratingAmount}
           containerClass={
             "bg-gray-200 h-[270px] w-[250px] ml-16 flex justify-center items-center relative"
@@ -26,11 +44,11 @@ function Product() {
           singlePost={true}
         />
       </div>
-      <div className="flex">
+      {user.email && <div className="flex">
         <button className="bg-green-500 w-[90%] mx-auto mt-2 px-7 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-          <i class="fa-solid fa-bolt text-yellow-300"></i> BUY NOW
+          <i className="fa-solid fa-bolt text-yellow-300"></i> BUY NOW
         </button>
-      </div>
+      </div>}
       <div className="flex-1 text-gray-800 space-y-6 mt-16">
         <h2 className="text-4xl font-semibold border-b pb-2">Product Description</h2>
         <p className="leading-relaxed text-lg tracking-wide text-justify">

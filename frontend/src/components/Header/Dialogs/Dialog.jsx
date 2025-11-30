@@ -108,7 +108,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
         {modalType === "Cart" && products.length > 0 && (
           <div className="w-full flex items-center">
             <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-              ORDER NOW ({products.length})
+              GO TO CART ({products.length})
             </button>
           </div>
         )}

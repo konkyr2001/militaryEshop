@@ -98,7 +98,7 @@ function CartDialog({ imageRef, setIsDialogOpen, cart }) {
         </ul>
         <div className="w-full flex items-center">
           <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-            ORDER NOW ({cartProducts.length})
+            GO TO CART ({cartProducts.length})
           </button>
         </div>
       </div>

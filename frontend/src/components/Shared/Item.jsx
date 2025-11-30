@@ -30,18 +30,6 @@ function Item({
   const [favouritesInitialValue, setFavouritesInitialValue] = useState(false);
   const [favourites, setFavourites] = useState(false);
   const dialogRef = useRef(null);
-  const info = {
-    id,
-    icon,
-    title,
-    oldPrice,
-    currentPrice,
-    discount,
-    ratingValue,
-    ratingAmount,
-    favouritesInitialValue,
-    cartInitialValue,
-  };
 
   const discountedPrice = discount
     ? Number(oldPrice) - (Number(oldPrice) * Number(discount)) / 100
@@ -168,7 +156,6 @@ function Item({
         ) : (
           <Link
             to={`/product/${id}`}
-            onClick={() => localStorage.setItem("info", JSON.stringify(info))}
           >
             <img
               className="w-[200px] pointer"
@@ -193,7 +180,6 @@ function Item({
         ) : (
           <Link
             to={`/product/${id}`}
-            onClick={() => localStorage.setItem("info", JSON.stringify(info))}
           >
             <p className={`color-black font-bold hover:underline ${titleClass}`}>{title}</p>
           </Link>

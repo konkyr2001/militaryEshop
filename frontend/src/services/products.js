@@ -27,8 +27,21 @@ async function getProductsById(ids) {
     const products = await Promise.all(promises);
     return products;
   } catch (error) {
+    console.log(error.message);
     return null;
   }
 }
 
-export { getAllProducts, getProductsById };
+async function getProductById(id) {
+  try {
+    const response = await fetch(`${url}/${id}`);
+    const product = await response.json();
+    return product;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+
+}
+
+export { getAllProducts, getProductsById, getProductById };
