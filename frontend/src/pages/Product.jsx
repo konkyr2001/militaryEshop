@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../App";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { Rating } from "react-simple-star-rating";
 import Item from "../components/Shared/Item";
 import { getProductById } from "../services/products";
@@ -20,7 +20,7 @@ function Product() {
     getProduct();
   }, [id]);
 
-  if  (!item) {
+  if (!item) {
     return;
   }
 
@@ -45,9 +45,11 @@ function Product() {
         />
       </div>
       {user.email && <div className="flex">
-        <button className="bg-green-500 w-[90%] mx-auto mt-2 px-7 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-          <i className="fa-solid fa-bolt text-yellow-300"></i> BUY NOW
-        </button>
+        <Link className="w-[90%] m-auto" to={`/cart/${item.id}`}>
+          <button className="bg-green-500 w-full mx-auto mt-2 px-7 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
+            <i className="fa-solid fa-bolt text-yellow-300"></i> BUY NOW
+          </button>
+        </Link>
       </div>}
       <div className="flex-1 text-gray-800 space-y-6 mt-16">
         <h2 className="text-4xl font-semibold border-b pb-2">Product Description</h2>

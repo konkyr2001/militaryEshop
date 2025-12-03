@@ -3,6 +3,8 @@ import { getProductsById } from "../../../services/products";
 import { Rating } from "react-simple-star-rating";
 import { removeFromFavourites } from "../../../services/user";
 import { UserContext } from "../../../App";
+import { Link } from "react-router-dom";
+import QuantityInput from "../../Shared/QuantityInput";
 const _SHOEPATH = "/src/assets/shoes/";
 
 function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, modalType, icon }) {
@@ -10,6 +12,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const divRef = useRef();
+  let totalCost = 0;
   useEffect(() => {
     async function getProducts() {
       setLoading(true);
@@ -77,6 +80,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
         )}
         <ul className="flex flex-col gap-4 max-h-[380px] overflow-auto pr-5">
           {products.map((product, index) => {
+            totalCost += parseFloat(product.currentPrice);
             return (
               <li className="flex items-center gap-0 relative" key={product.id}>
                 <span className="absolute cursor-pointer right-1 mb-[10px] mt-2">
@@ -95,6 +99,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
                       <span className="ml-4 line-through">${product.oldPrice}</span>
                     </p>
                   )}
+                  {modalType === "Cart" && <QuantityInput />}
                   {!product.discount && <p>${product.currentPrice}</p>}
                   <span className="flex ">
                     <Rating readonly={true} initialValue={product.rating} />
@@ -106,11 +111,16 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
           })}
         </ul>
         {modalType === "Cart" && products.length > 0 && (
-          <div className="w-full flex items-center">
-            <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-              GO TO CART ({products.length})
-            </button>
-          </div>
+          <span className="w-full flex justify-center">
+            <Link
+              to={`/account/cart/${user.id}`}
+              onClick={(e) => setIsDialogOpen(false)}
+            >
+              <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
+                GO TO CART (${Math.round(totalCost * 10) / 10})
+              </button>
+            </Link>
+          </span>
         )}
       </div>
     </div>

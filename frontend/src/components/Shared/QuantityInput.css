@@ -1,0 +1,47 @@
+.quantity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  border-radius: 20px;
+  font-size: 20px;
+  width: 100px;
+  height: 30px;
+  padding: 0 10px;
+  background-color: rgb(233, 232, 232);
+}
+
+.quantity-container input[type="number"] {
+  width: 40px;
+  height: 90%;
+  color: rgb(80, 80, 80);
+  text-align: center;
+  background-color: rgb(233, 232, 232);
+}
+
+.fa-minus, .fa-plus {
+  height: 100%;
+  padding: 5px;
+  color: rgb(80, 80, 80);
+  border-radius: 20px;
+  background-color: rgb(233, 232, 232);
+  transition: background-color 0.2s ease-in-out,
+  scale 0.07s ease-in-out;
+}
+.fa-minus:hover, .fa-plus:hover {
+  background-color: rgb(207, 207, 207);
+}
+.fa-minus:active, .fa-plus:active {
+  scale: 0.8;
+}
+
+
+.quantity-container input[type="number"]::-webkit-outer-spin-button,
+.quantity-container input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-container input[type="number"] {
+  -moz-appearance: textfield;
+}

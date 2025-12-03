@@ -44,7 +44,6 @@ const SignUp = () => {
             replace: true
           });
         }, 500);
-        setFormError(false);
         return true;
       } else {
         console.log("Something went wrong");

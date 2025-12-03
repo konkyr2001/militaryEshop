@@ -111,7 +111,7 @@ const MyAccountSection = ({ currentUser }) => {
     <form method="PUT" onSubmit={(e) => handleSubmit(e)} className="w-full mx-20">
       <fieldset className="flex flex-col gap-10 text-[0.9rem]">
         <p className="text-2xl text-blue-700 text-center font-bold">Account information</p>
-        {alert === "SUCCESS" && <Alert severity="success">This is a success Alert.</Alert>}
+        {alert === "SUCCESS" && <Alert severity="success">Your changes have been saved!</Alert>}
         <span className="relative">
           <label htmlFor="userEmailProfile" className="tracking-wide text-base">
             Email:
