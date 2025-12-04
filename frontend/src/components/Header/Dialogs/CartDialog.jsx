@@ -1,7 +1,7 @@
 import Dialog from "./Dialog";
 import { removeFromCart } from "../../../services/user";
 
-function FavouritesDialog({ imageRef, setIsDialogOpen, cart }) {
+function CartDialog({ imageRef, setIsDialogOpen, cart }) {
   return (
     <Dialog
       imageRef={imageRef}
@@ -15,4 +15,4 @@ function FavouritesDialog({ imageRef, setIsDialogOpen, cart }) {
   );
 }
 
-export default FavouritesDialog;
+export default CartDialog;

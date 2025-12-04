@@ -1,64 +1,70 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./Cart.css";
-import { useParams } from "react-router-dom";
-import { getProductById } from "../../services/products";
-
+import { useLocation, useParams } from "react-router-dom";
+import { UserContext } from "../../App";
+import { getProductById, getProductsById } from "../../services/products";
+import { removeFromCart } from "../../services/user";
+import CartItem from "./CartItem";
 const _SHOEPATH = "/src/assets/shoes/";
-function Cart({ accountId }) {
+function Cart() {
     const { id } = useParams();
-    // const { user, setUser } = useContext(UserContext);
+    const url = useLocation();
     const [items, setItems] = useState([]);
-    console.log(accountId)
+    const { user, setUser } = useContext(UserContext);
     useEffect(() => {
         async function getProduct() {
             const product = await getProductById(id);
             setItems((oldArr) => [...oldArr, product]);
         }
         async function getUserCart() {
-
+            const products = await getProductsById(user.cart);
+            setItems(products);
         }
 
-        accountId ? getUserCart() : getProduct()
-    }, [id]);
+        url.pathname.includes("account") ? getUserCart() : getProduct()
+    }, [user, id]);
 
-    console.log("items ", items);
-    return <div className="w-[90%] m-auto h-[80vh]">
+    async function removeProduct(id) {
+        try {
+            const response = await removeFromCart(user.email, id);
+            if (response.found) {
+                setUser((prevState) => ({
+                    ...prevState,
+                    cart: response.cart,
+                }));
+            }
+        } catch (error) {
+            console.log("error");
+        }
+    }
+
+    return <div className="m-auto min-h-[80vh] cart-container">
         <div className="w-full flex justify-center items-center h-[100px]">
             <h1 className="text-5xl font-bold font-cabinet">Your Cart</h1>
         </div>
-        <div className="w-full max-h-full flex flex-row justify-between py-20">
-            <table className="w-[70%] h-fit overflow-hidden">
-                <thead>
-                    <tr>
-                        <th className="w-[50%] text-left">Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody className="overflow-scroll h-full">
+        <div className="w-full h-full flex flex-row justify-between py-16">
+            <div className="table w-[70%] max-h-max h-fit">
+                <div className="table-header flex mb-5 pb-2 text-slate-500 text- border-slate-200 border-b-2">
+                    <span className="pl-10 w-[50%] font-tiktok">PRODUCT</span>
+                    <span className="flex-1 font-tiktok">PRICE</span>
+                    <span className="flex-1 font-tiktok">QUANTITY</span>
+                    <span className="flex-1 font-tiktok">TOTAL</span>
+                </div>
+                <div className="table-body w-full max-h-[400pasx] overflow-yasd-auto">
                     {items?.map(item => {
-                        return <tr key={item.id}>
-                            <td>
-                                <div className="flex items-center">
-                                    <img className="w-40" src={`${_SHOEPATH}${item.icon}`} />
-                                    <h2 className="mb-8">{item.title}</h2>
-                                </div>
-                            </td>
-                            <td className="text-center">
-                                <p>{item.currentPrice}</p>
-                            </td>
-                            <td className="w-full h-full flex justify-center items-center">
-                                <input className="border-gray-200 border-2 w-10 text-center" type="text" name="quantity" min="1" max="5" />
-                            </td>
-                            <td className="text-center">
-                                $140
-                            </td>
-                        </tr>
-                    })}
-                </tbody>
-            </table>
-            <div className="w-[25%] h-[300px] flex flex-col bg-purple-400">
+                        return <div key={item.id} className="flex items-center relative max-h-[100px] w-full border-slate-200 border-b-2 pb-2 mb-5">
+                            <CartItem
+                                id={item.id}
+                                image={`${_SHOEPATH}${item.icon}`}
+                                title={item.title}
+                                currentPrice={item.currentPrice}
+                                removeProduct={removeProduct}
+                            />
+                        </div>
+                    })};
+                </div>
+            </div>
+            <div className="w-[25%] h-[300px] flex flex-col bg-purple-400 sticky top-10">
                 <div className="flex flex-col bg-slate-200 text-black">
                     <div className="border-b-2 border-gray-300 p-5">
                         <h3 className="font-extrabold font-cabinetMedium">Order Summary</h3>
@@ -72,7 +78,7 @@ function Cart({ accountId }) {
                             <p className="float-left">Shopping</p>
                             <p className="float-right font-extrabold">FREE</p>
                         </span>
-                        <a className="text-cyan-500 cursor-pointer w-fit">Add coupon code <i className="fa-solid fa-arrow-right"></i></a>
+                        <a className="text-orange-600 cursor-pointer w-fit">Add coupon code <i className="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div className="fborder-b-2 border-gray-300 p-5">
                         <span className="w-full">

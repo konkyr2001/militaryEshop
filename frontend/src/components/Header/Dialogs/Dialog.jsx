@@ -99,7 +99,6 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
                       <span className="ml-4 line-through">${product.oldPrice}</span>
                     </p>
                   )}
-                  {modalType === "Cart" && <QuantityInput />}
                   {!product.discount && <p>${product.currentPrice}</p>}
                   <span className="flex ">
                     <Rating readonly={true} initialValue={product.rating} />
@@ -117,7 +116,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
               onClick={(e) => setIsDialogOpen(false)}
             >
               <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-                GO TO CART (${Math.round(totalCost * 10) / 10})
+                GO TO CART (${products.length})
               </button>
             </Link>
           </span>

@@ -1,9 +1,6 @@
-import { useState } from "react";
 import "./QuantityInput.css";
 
-function QuantityInput() {
-    const [quantity, setQuantity] = useState(1);
-
+function QuantityInput({ quantity, setQuantity }) {
     function handleMinus() {
         if (quantity === 0)
             return;
