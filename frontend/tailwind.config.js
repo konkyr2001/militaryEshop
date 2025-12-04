@@ -7,6 +7,7 @@ export default {
         cabinet: ["Cabinet Grotesk", "sans-serif"],
         cabinetMedium: ["Cabinet Grotesk Medium", "sans-serif"],
         teko: ["Teko", "serif"],
+        tiktok: ["TikTok Sans", "sans-serif"]
       },
       backgroundColor: {
         lightPurple: "#4A4C6C",

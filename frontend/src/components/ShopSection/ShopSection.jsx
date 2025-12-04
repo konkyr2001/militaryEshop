@@ -38,7 +38,7 @@ function ShopSection() {
         </li>
       </ul>
       <section className="flex flex-col justify-center items-center gap-y-12 w-full pt-20">
-        <ul className="flex flex-wrap gap-x-20 justify-center max-w-[1400px]">
+        <ul className="flex flex-wrap gap-x-20 gap-y-5 justify-center max-w-[1400px]">
           {products.map((product, index) => {
             return (
               <li className="w-[270px]" key={product.id}>

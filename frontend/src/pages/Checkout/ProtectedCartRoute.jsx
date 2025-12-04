@@ -16,7 +16,7 @@ function ProtectedCartRoute() {
         return <Navigate to="/" replace />;
     }
     
-    return <Cart accountId={url.pathname.includes("account")} />   
+    return <Cart />   
 }
 
 export default ProtectedCartRoute;
