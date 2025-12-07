@@ -1,17 +1,19 @@
 .cart-container {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    margin: auto;
+    min-height: 80vh;
 }
 
 .cart-container .quantity-container {
-  width: 80px;
+    width: 80px;
 }
 
 .cart-container .quantity-container i {
-  padding: 3.5px
+    padding: 3.5px
 }
 
 .cart-container .quantity-container input {
-  width: 30px;
+    width: 30px;
 }

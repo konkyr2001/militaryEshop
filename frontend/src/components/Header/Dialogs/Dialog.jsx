@@ -116,7 +116,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
               onClick={(e) => setIsDialogOpen(false)}
             >
               <button className="bg-green-500 m-auto mt-2 px-5 p-1 rounded-md text-white font-cabinet shadow-md hover:bg-green-600 transition-all">
-                GO TO CART (${products.length})
+                GO TO CART ({products.length})
               </button>
             </Link>
           </span>

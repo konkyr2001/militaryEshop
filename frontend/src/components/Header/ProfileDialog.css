@@ -1,6 +1,5 @@
 .triangle-up {
   display: inline-block;
-  border-bottom: 15px solid rgb(224, 223, 223);
   border-right: 15px solid transparent;
   border-left: 15px solid transparent;
 }

@@ -7,6 +7,7 @@ import ReminderDialog from "./ReminderDialog";
 import { addToFavourites, removeFromFavourites } from "../../services/user";
 import { addToCart, removeFromCart } from "../../services/user";
 import "like-effects";
+import Alert from "@mui/material/Alert";
 
 function Item({
   id,
@@ -30,10 +31,20 @@ function Item({
   const [favouritesInitialValue, setFavouritesInitialValue] = useState(false);
   const [favourites, setFavourites] = useState(false);
   const dialogRef = useRef(null);
-
+  const [alert, setAlert] = useState(false);
   const discountedPrice = discount
     ? Number(oldPrice) - (Number(oldPrice) * Number(discount)) / 100
     : currentPrice;
+
+  useEffect(() => {
+    if (!alert) return;
+
+    const timer = setTimeout(() => {
+      setAlert(false);
+    }, 2000);
+
+    return () => clearTimeout(timer); // cleanup
+  }, [alert]);
 
   useEffect(() => {
     if (user?.cart?.includes(id)) {
@@ -89,6 +100,7 @@ function Item({
         response = await addToCart(user.email, id);
       }
       if (response.found) {
+        setAlert(true);
         setUser((prevState) => ({
           ...prevState,
           cart: response.cart,
@@ -164,7 +176,8 @@ function Item({
             />
           </Link>
         )}
-
+          {cartInitialValue && alert && <Alert severity="success"><strong>{title}</strong> has been added to your cart</Alert>}
+          {!cartInitialValue && alert && <Alert severity="error"><strong>{title}</strong> has been removed to your cart</Alert>}
         <span
           className={`bg-black text-white text-center p-2 text-lg font-medium absolute w-full bottom-0 cursor-pointer
           ${visible ? "block" : "hidden"}`}
