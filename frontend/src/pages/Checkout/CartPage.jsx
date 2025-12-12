@@ -1,14 +1,16 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import "./CartPage.css";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { UserContext } from "../../App";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { getProductById, getProductsById } from "../../services/products";
-import { removeFromCart } from "../../services/user";
+import { removeFromCart, addUserCheckout, getUserById } from "../../services/user";
 import CartItem from "./CartItem";
-import { formatPrice } from "../../services/function";
+import { formatPrice } from "../../scripts/function";
 import Shipping from "./Shipping";
 import Alert from "@mui/material/Alert";
 import EmptyCart from "./EmptyCart";
+import { UserContext } from "../../App";
+import Home from "../Home";
+import { createCheckout } from "../../services/checkout";
 
 const _SHOEPATH = "/src/assets/shoes/";
 const defaultLocation = {
@@ -16,12 +18,18 @@ const defaultLocation = {
     latitude: 37.9838,
 }
 function Cart() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const url = useLocation();
     const [isLoading, setIsLoading] = useState(true);
-    const [alert, setAlert] = useState(false);
+    const [alert, setAlert] = useState({
+        visible: false,
+        type: '',
+        message: '',
+    });
     const [items, setItems] = useState([]);
-    const { user, setUser } = useContext(UserContext);
+    const [userState, setUserState] = useState();
+    const {user, setUser} = useContext(UserContext);
     const [subtotal, setSubtotal] = useState(0);
     const [shippingCost, setShippingCost] = useState(0);
     const [total, setTotal] = useState(0);
@@ -33,10 +41,14 @@ function Cart() {
     const shippingRef = useRef(null);
 
     useEffect(() => {
-        if (!alert) return;
+        if (!alert.type) return;
 
         const timer = setTimeout(() => {
-            setAlert(false);
+            setAlert({
+                visible: false,
+                type: '',
+                message: '',
+            });
         }, 2000);
 
         return () => clearTimeout(timer); // cleanup
@@ -49,14 +61,16 @@ function Cart() {
             setIsLoading(false);
         }
         async function getUserCart() {
-            const products = await getProductsById(user.cart);
+            const currentUser = await getUserById(id);
+            setUserState(currentUser);
+            const products = await getProductsById(currentUser.cart);
             setItems(products);
             setIsLoading(false);
         }
 
         setIsLoading(true);
-        url.pathname.includes("account") ? getUserCart() : getProduct()
-    }, [user, id]);
+        url.pathname.includes("account") ? getUserCart() : getProduct();
+    }, [url.pathname]);
 
     useEffect(() => {
         setTotal(subtotal + shippingCost);
@@ -66,34 +80,96 @@ function Cart() {
         setShowMap((prevShowMap) => !prevShowMap);
     }
 
-    async function removeProduct(id) {
+    async function removeProduct(productID, title, subtotal) {
         try {
-            const response = await removeFromCart(user.email, id);
+            const response = await removeFromCart(userState.email, productID);
             if (response.found) {
-                setUser((prevState) => ({
+                setUserState((prevState) => ({
                     ...prevState,
                     cart: response.cart,
                 }));
-                setAlert(true);
+                setUser({
+                    ...userState,
+                    cart: response.cart
+                });
+                localStorage.removeItem(productID);
+                setItems(prevItems => 
+                    prevItems.filter(item => item.id !== productID)     
+                );
+                setSubtotal((prevSubTotal) => prevSubTotal - subtotal);
+                setAlert({
+                    visible: true,
+                    type: 'success',
+                    message: <p><strong>{title}</strong> has been removed from the cart!</p>,
+                });
             }
         } catch (error) {
             console.log("error");
         }
     }
 
-    function handleSubmit(e) {
-        e.preventDefault(); W
+    async function handleSubmit(e) {
+        e.preventDefault();
+        if (!location.message) {
+            setAlert({
+                visible: true,
+                type: 'error',
+                message: 'Please set a shipping location!'
+            })
+            return;
+        }
+
+        if (confirm("Press a button!")) {
+            const itemsQuantity = items.map((item) => {
+                const quantity = localStorage.getItem(item.id) ? localStorage.getItem(item.id) : 1;
+                return {
+                    id: item.id,
+                    title: item.title,
+                    icon: item.icon,
+                    price: item.currentPrice,
+                    quantity
+                }
+            });
+            const checkoutObject = {
+                buyer: userState.id,
+                items: itemsQuantity,
+                shippingCost: shippingCost,
+                subtotal,
+                total,
+                shippingLocation: {
+                    message: location.message,
+                    lat: location.coordinates.latitude,
+                    lon: location.coordinates.longitude,
+                }
+            };
+            try {
+                const checkout = await createCheckout(checkoutObject);
+                if (checkout) {
+                    const userCheckout = await addUserCheckout(userState.id, checkout.id);
+                    if (userCheckout) {
+                        console.log("ola entaksei ", userCheckout);
+                        items.map((item) => {
+                            localStorage.removeItem(item.id);
+                        });
+                        return navigate('/');
+                    }
+                }
+            } catch (error) {
+                console.log(error.message);
+                return navigate('/');
+            }
+        }
         return;
     }
 
-    if (isLoading) return;
+    if (isLoading) return null;
 
     if (items && items.length === 0) {
         return <EmptyCart />
     }
 
     return <div className="cart-container">
-        {alert && <Alert severity="success">Item has been removed from the cart!</Alert>}
+        {alert.visible && <Alert severity={alert.type}>{alert.message}</Alert>}
         <div className="w-full flex justify-center items-center h-[100px]">
             <h1 className="text-5xl font-bold font-cabinet">Your Cart</h1>
         </div>
@@ -115,12 +191,13 @@ function Cart() {
                                 currentPrice={item.currentPrice}
                                 removeProduct={removeProduct}
                                 setSubtotal={setSubtotal}
+                                setUserState={setUserState}
                             />
                         </div>
                     })};
                 </div>
             </div>
-            <form onSubmit={(e) => handleSubmit(e)} className="w-[30%] h-[300px] flex flex-col sticky top-10">
+            <form onSubmit={(e) => handleSubmit(e)} className="w-[30%] min-h-[300px] h-fit flex flex-col sticky top-10">
                 <div className="flex flex-col bg-slate-200 text-black">
                     <div className="border-b-2 border-gray-300 p-5">
                         <h3 className="font-extrabold font-cabinetMedium">Order Summary</h3>
@@ -133,7 +210,7 @@ function Cart() {
                         <span className="w-full  flex items-center justify-between">
                             <div className="relative"
                             >
-                                <span className="text-cyan-500 cursor-pointer hover:underline underline-offset-2 w-fit">
+                                <span className={`${location.message ? 'text-cyan-500' : 'text-red-500'} cursor-pointer hover:underline underline-offset-2 w-fit`}>
                                     <p className="whitespace-nowrap"
                                         onClick={handleModal}
                                         ref={shippingRef}
@@ -159,7 +236,7 @@ function Cart() {
                         </span>
                     </div>
                 </div>
-                <button type="submit" className="m-auto bg-green-600 text-slate-100 w-full flex-grow tracking-wider">Checkout</button>
+                <button type="submit" className="bg-green-600 text-slate-100 w-full h-[50px] tracking-wider">Checkout</button>
             </form>
         </div>
     </div>

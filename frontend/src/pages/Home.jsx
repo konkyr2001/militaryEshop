@@ -39,6 +39,7 @@ function Home() {
       }
     }
   }, [location.state]);
+  console.log("localstorage, ",localStorage)
 
   // when component get opened it checks if the user is remembered and log him in
   useEffect(() => {

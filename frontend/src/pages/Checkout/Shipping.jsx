@@ -118,10 +118,18 @@ function Shipping({ location, setLocation, setIsDialogOpen, shippingRef, default
                 const result = await response.json();
                 setIsLoading(false);
                 const distance = result.features[0].properties.distance;
+                console.log(distance);
                 setShippingCost(parseInt(distance / 100000));
             }
         } catch (error) {
             setIsLoading(false);
+            setShippingCost(0);
+            setLocation((prevLoc) => {
+                return {
+                    ...prevLoc,
+                    message: ''
+                }
+            })
             console.log(error.message);
         }
     }

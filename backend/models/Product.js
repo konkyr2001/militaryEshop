@@ -10,10 +10,10 @@ const productSchema = new mongoose.Schema({
     ref: "User",
   },
   oldPrice: {
-    type: String,
+    type: Number,
   },
   currentPrice: {
-    type: String,
+    type: Number,
     required: true,
   },
   discount: {
@@ -31,18 +31,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // comments: [
-  //   {
-  //     receiver: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     message: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //   },
-  // ],
   likes: {
     type: Number,
     default: 0,
