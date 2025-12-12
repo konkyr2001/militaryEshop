@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
       ref: "Product",
     },
   ],
+  checkouts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Cart",
+    }
+  ]
 }, {
   timestamps: true
 });

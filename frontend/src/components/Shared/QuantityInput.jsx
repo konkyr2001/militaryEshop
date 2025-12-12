@@ -1,15 +1,6 @@
 import "./QuantityInput.css";
 
-function QuantityInput({ quantity, setQuantity }) {
-    function handleMinus() {
-        if (quantity === 0)
-            return;
-        setQuantity((prevQuantity) => prevQuantity - 1);
-    }
-
-    function handlePlus() {
-        setQuantity((prevQuantity) => prevQuantity + 1);
-    }
+function QuantityInput({ handleMinus, handlePlus, quantity }) {
     return <span className="quantity-container">
         <button onClick={handleMinus}>
             <i className="fa-solid fa-minus"></i>

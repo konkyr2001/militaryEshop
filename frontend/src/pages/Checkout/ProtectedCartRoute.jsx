@@ -1,7 +1,7 @@
 import { useParams, Navigate, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../App";
-import Cart from "./Cart";
+import Cart from "./CartPage";
 
 function ProtectedCartRoute() {
     const url = useLocation();

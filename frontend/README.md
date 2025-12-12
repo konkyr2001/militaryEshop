@@ -31,3 +31,8 @@ Things to do:
 -BUGS:
 
 - Images are not displayed
+
+API used:
+- for shipping routing: https://apidocs.geoapify.com/docs/routing/
+- for location geocoding (coordinates to location): https://developer.tomtom.com/geocoding-api/documentation/product-information/introduction
+- for displaying and getting coordinates of map: https://visgl.github.io/react-maplibre/

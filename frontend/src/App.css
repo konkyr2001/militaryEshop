@@ -5,3 +5,15 @@ img {
 .pointer {
   cursor: pointer !important;
 }
+
+.MuiPaper-root {
+  position: fixed;
+  right: 50%;
+  transform:translateX(50%);
+  top: 20%;
+  z-index: 50;
+}
+
+.MuiAlert-colorSuccess {
+  background-color: rgb(231, 247, 231) !important;
+}

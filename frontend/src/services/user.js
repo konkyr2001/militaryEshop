@@ -27,9 +27,20 @@ async function checkUser(email, password) {
 
 async function getUser(email) {
   try {
-    const response = await fetch(`${url}/${email}`);
+    const response = await fetch(`${url}/email/${email}`);
     const data = await response.json();
-    console.log("get User: ", data);
+    console.log("get User by email: ", data);
+    return data;
+  } catch (error) {
+    throw error.message;
+  }
+}
+
+async function getUserById(id) {
+  try {
+    const response = await fetch(`${url}/${id}`);
+    const data = await response.json();
+    console.log("get User by id: ", data);
     return data;
   } catch (error) {
     throw error.message;
@@ -227,14 +238,35 @@ async function deleteUser(id) {
   }
 }
 
+async function addUserCheckout(userID, checkoutID) {
+  try {
+    const response = await fetch(`${url}/checkout/${userID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        checkoutID
+      })
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 export {
   checkUser,
   getUser,
+  getUserById,
   updateUser,
   addToFavourites,
   removeFromFavourites,
   addToCart,
   removeFromCart,
   signupUser,
-  deleteUser
+  deleteUser,
+  addUserCheckout
 };

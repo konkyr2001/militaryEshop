@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 // const bcrypt = require("bcryptjs");
 
-router.get("/:email", async (req, res) => {
+router.get("/email/:email", async (req, res) => {
   const email = req.params.email;
 
   try {
@@ -15,6 +15,21 @@ router.get("/:email", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.get("/:id", async (req, res) => {
+  const userID = req.params.id;
+
+  try {
+    const user = await User.findById({ 
+      _id: userID
+     });
+    console.log("get user by id: ", userID);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 router.put("/updateUser", async (req, res) => {
   const { oldUser, newUser } = req.body;
@@ -158,4 +173,28 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.put("/checkout/:id", async (req, res) => {
+  const userID = req.params.id;
+  const checkoutID = req.body.checkoutID;
+  try {
+    const user = await User.findById({
+      _id: userID
+    });
+    if (!user.checkouts.includes(checkoutID)) {
+      user.checkouts.push(checkoutID);
+      user.cart = [];
+      await user.save();
+      console.log("user checkout added");
+      return res.status(200).json(user);
+    } else {
+      console.log("user checkout not added");
+      return res.status(400).json({
+        message: "Product not found on cart",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
 module.exports = router;

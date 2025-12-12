@@ -1,9 +1,9 @@
 import { useState } from "react";
-const Tab = ({ children, number, open, setOpen }) => {
+const Tab = ({ children, number, tabOpen, setTabOpen }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <li
-      onClick={() => setOpen(number)}
+      onClick={() => setTabOpen(number)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="border-gray-400 border rounded pointer p-4 relative hover:text-cyan-600 hover:border-cyan-400 hover:shadow-md transition"
@@ -12,7 +12,7 @@ const Tab = ({ children, number, open, setOpen }) => {
         className={`${hovered ? "inline-block" : "hidden"} text-cyan-400 font-bold mr-1`}
       >{`>`}</span>
       {children}
-      {open === number && (
+      {tabOpen === number && (
         <div
           className={`${hovered ? "border-r-cyan-300" : "border-r-gray-300"} triangle-left absolute right-0 -top-[1px] border-[29px]`}
         ></div>

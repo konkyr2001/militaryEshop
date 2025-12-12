@@ -27,6 +27,9 @@ app.use("/users", user);
 const product = require("./routes/product");
 app.use("/products", product);
 
+const checkout = require("./routes/checkout");
+app.use("/checkout", checkout);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

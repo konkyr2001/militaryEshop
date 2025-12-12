@@ -2,9 +2,11 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../App";
 import Tab from "./Tab";
 import MyAccountSection from "./MyAccountSection";
+import Orders from "./Orders";
+
 const Account = () => {
   const { user, setUser } = useContext(UserContext);
-  const [open, setOpen] = useState("1"); // first tab by default
+  const [tabOpen, setTabOpen] = useState("1"); // first tab by default
 
   return (
     <div className="w-full h-[80vh] flex justify-center items-center">
@@ -15,16 +17,16 @@ const Account = () => {
             {user && <li className="text-lg font-bold">{user.email}</li>}
           </ul>
           <ul className="absolute top-[180px] left-0 w-full h-[320px] px-10 gap-6 flex flex-col">
-            <Tab open={open} setOpen={setOpen} number="1">
+            <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="1">
               <i className="fa-solid fa-user mr-2"></i>
               My Account
             </Tab>
-            <Tab open={open} setOpen={setOpen} number="2">
+            <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="2">
               <i className="fa-solid fa-basket-shopping mr-2"></i>
               Orders
             </Tab>
             {user && user.role === "seller" && (
-              <Tab open={open} setOpen={setOpen} number="3">
+              <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="3">
                 <i className="fa-solid fa-shop mr-2"></i>
                 My Products
               </Tab>
@@ -32,7 +34,8 @@ const Account = () => {
           </ul>
         </div>
         <div className="w-full max-w-[500px] m-auto h-[90%] flex justify-center items-center">
-          <MyAccountSection currentUser={user} />
+          {tabOpen == 1 && <MyAccountSection currentUser={user} />}
+          {tabOpen == 2 && <Orders currentUser={user} />}
         </div>
       </div>
     </div>
