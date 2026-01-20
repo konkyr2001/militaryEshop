@@ -10,8 +10,8 @@ const Account = () => {
 
   return (
     <div className="w-full h-[80vh] flex justify-center items-center">
-      <div className="w-4/5 max-w-[1300px] flex flex-row h-[500px] border-gray-400 border rounded">
-        <div className="flex flex-col w-[450px] gap-[40px] p-10  relative border-r-2 border-gray-200">
+      <div className="w-4/5 max-w-[1150px] flex flex-row h-[600px] border-gray-400 border rounded">
+        <div className="flex flex-col min-w-[350px] gap-[40px] p-10  relative border-r-2 border-gray-200">
           <ul className="w-full h-[180px] left-0 top-0 absolute flex flex-row justify-center items-center gap-4">
             <i className="fa-regular fa-user rounded-[50%] border-4 border-black w-12 h-12 pl-[2px] flex justify-center items-center text-2xl"></i>
             {user && <li className="text-lg font-bold">{user.email}</li>}
@@ -33,7 +33,7 @@ const Account = () => {
             )}
           </ul>
         </div>
-        <div className="w-full max-w-[500px] m-auto h-[90%] flex justify-center items-center">
+        <div className="w-full min-width-[500px] h-full m-auto flex justify-center items-center">
           {tabOpen == 1 && <MyAccountSection currentUser={user} />}
           {tabOpen == 2 && <Orders currentUser={user} />}
         </div>

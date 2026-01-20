@@ -56,11 +56,13 @@ function Cart() {
 
     useEffect(() => {
         async function getProduct() {
+            setUserState(user);
             const product = await getProductById(id);
             setItems((oldArr) => [...oldArr, product]);
             setIsLoading(false);
         }
         async function getUserCart() {
+            console.log("user: ",user);
             const currentUser = await getUserById(id);
             setUserState(currentUser);
             const products = await getProductsById(currentUser.cart);
@@ -121,6 +123,7 @@ function Cart() {
 
         if (confirm("Press a button!")) {
             const itemsQuantity = items.map((item) => {
+                console.log("itemID: ",localStorage.getItem(item.id))
                 const quantity = localStorage.getItem(item.id) ? localStorage.getItem(item.id) : 1;
                 return {
                     id: item.id,
@@ -130,6 +133,7 @@ function Cart() {
                     quantity
                 }
             });
+            console.log(userState)
             const checkoutObject = {
                 buyer: userState.id,
                 items: itemsQuantity,
@@ -197,7 +201,7 @@ function Cart() {
                     })};
                 </div>
             </div>
-            <form onSubmit={(e) => handleSubmit(e)} className="w-[30%] min-h-[300px] h-fit flex flex-col sticky top-10">
+            <form onSubmit={(e) => handleSubmit(e)} className="w-[40%] max-w-[400px] min-h-[300px] h-fit flex flex-col sticky top-10">
                 <div className="flex flex-col bg-slate-200 text-black">
                     <div className="border-b-2 border-gray-300 p-5">
                         <h3 className="font-extrabold font-cabinetMedium">Order Summary</h3>
@@ -214,7 +218,10 @@ function Cart() {
                                     <p className="whitespace-nowrap"
                                         onClick={handleModal}
                                         ref={shippingRef}
-                                    >Shipping Address<i className="fa-solid fa-location-dot ml-1"></i></p>
+                                    >
+                                        Shipping Address
+                                        <i className="fa-solid fa-location-dot ml-1"></i>
+                                    </p>
 
                                 </span>
                                 {showMap && <Shipping location={location} setLocation={setLocation}

@@ -95,6 +95,7 @@ function Item({
     try {
       let response;
       if (!cart) {
+        localStorage.removeItem(id);
         response = await removeFromCart(user.email, id);
       } else {
         response = await addToCart(user.email, id);

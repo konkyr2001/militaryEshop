@@ -10,6 +10,22 @@
   font-family: "Cabinet Grotesk";
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+  min-height: 85vh;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 @font-face {
   font-family: "Cabinet Grotesk";
   src: url("./assets/fonts/CabinetGrotesk-Extralight.otf") format("opentype");

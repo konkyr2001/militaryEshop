@@ -36,3 +36,10 @@ API used:
 - for shipping routing: https://apidocs.geoapify.com/docs/routing/
 - for location geocoding (coordinates to location): https://developer.tomtom.com/geocoding-api/documentation/product-information/introduction
 - for displaying and getting coordinates of map: https://visgl.github.io/react-maplibre/
+- ReCaptcha: https://cloud.google.com/security/products/recaptcha
+
+Figma Designs: 
+- https://gr.pinterest.com/pin/288723026131939155/
+- https://www.skroutz.gr/account/orders?tab=ecommerce_orders
+- https://www.figma.com/community/file/1318271280888312648/nike-ui-inspiration-free-ui-recreated-community
+- https://dribbble.com/shots/21728235-Order-History

@@ -10,6 +10,7 @@ import LoggedInProfileDialog from "./LoggedInProfileDialog";
 import NoAccountModal from "./Dialogs/NoAccountModal";
 import { UserContext } from "../../App";
 import { getUser } from "../../services/user";
+import "./Header.css";
 
 function Header() {
   const { user, setUser } = useContext(UserContext);
@@ -57,7 +58,7 @@ function Header() {
     }
   }
   return (
-    <nav className="w-full">
+    <nav className="w-full h-[15vh]">
       <p className="font-cabinet bg-lightPurple text-center p-3 text-white">
         New here? Save 20% with code: YR24
       </p>
@@ -90,7 +91,7 @@ function Header() {
         <ul className="flex ml-auto space-x-8">
           <li className="h-[30px] pt-1 flex items-center relative">
             <i
-              className="fa-regular fa-heart text-2xl cursor-pointer"
+              className="fa-regular fa-heart header-icon text-2xl cursor-pointer"
               onClick={handleFavourties}
               ref={favouritesImageRef}
             ></i>
@@ -110,7 +111,7 @@ function Header() {
           </li>
           <li className="h-[30px] flex items-center relative">
             <img
-              className="h-[25px] object-cover pointer"
+              className="h-[25px] object-cover pointer header-icon"
               src={shoppingCartImg}
               onClick={handleCart}
               ref={cartImageRef}
@@ -132,7 +133,7 @@ function Header() {
           <li className="h-[30px] flex items-center relative">
             <img
               ref={profileImageRef}
-              className="h-[23px] object-cover pointer"
+              className="h-[23px] object-cover pointer header-icon"
               src={profileImg}
               onClick={(e) => setProfileDialogOpen((prevState) => !prevState)}
             />

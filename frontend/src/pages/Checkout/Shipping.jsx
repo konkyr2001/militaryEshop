@@ -94,7 +94,7 @@ function Shipping({ location, setLocation, setIsDialogOpen, shippingRef, default
 
     async function getRealLocation(newPos) {
         try {
-            const response = await fetch(`${mapURL}/${newPos.latitude},${newPos.longitude}.json?key=${mapKey}`)
+            const response = await fetch(`${mapURL}/${newPos.latitude},${newPos.longitude}.json?key=${mapKey}&language=en-US`)
             if (response.ok) {
                 const result = await response.json();
                 const locationMessage = setLocationMessage(result.addresses[0].address);

@@ -3,6 +3,7 @@ import EmailInput from "../components/Shared/EmailInput";
 import PasswordInput from "../components/Shared/PasswordInput";
 import SubmitButton from "../components/Shared/SubmitButton";
 import AlreadyText from "../components/Shared/AlreadyText";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useNavigate } from "react-router-dom";
 import { signupUser, getUser } from "../services/user";
 import Loading from "../components/Shared/Loading";
@@ -16,6 +17,7 @@ const SignUp = () => {
   const [remember, setRemember] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [recaptcha, setRecaptcha] = useState(false);
   const [roleError, setRoleError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
@@ -30,12 +32,13 @@ const SignUp = () => {
         return false;
       }
       const userCreated = await signupUser(email, password, role);
-      if (userCreated) {
+      if (userCreated.found) {
         setIsLoading(true);
         setTimeout(() => {
           setIsLoading(false);
           navigate("/", {
             state: {
+              id: userCreated.data.id,
               email,
               password,
               role,
@@ -55,6 +58,8 @@ const SignUp = () => {
   }
 
   async function handleSubmit(event) {
+    if (!recaptcha) return;
+
     event.preventDefault();
     if (!checkInputs(event)) {
       return;
@@ -174,6 +179,7 @@ const SignUp = () => {
                 )}
               </span>
               <RememberMe className={"w-4 h-4"} remember={remember} setRemember={setRemember} />
+              <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA} onChange={(e) => setRecaptcha(true)}/>
               <SubmitButton
                 buttonText="Sign Up"
                 className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold hover:from-green-600 hover:to-green-700"

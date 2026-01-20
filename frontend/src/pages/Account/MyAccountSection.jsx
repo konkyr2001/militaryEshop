@@ -108,7 +108,7 @@ const MyAccountSection = ({ currentUser }) => {
   }
 
   return (
-    <form method="PUT" onSubmit={(e) => handleSubmit(e)} className="w-full mx-20">
+    <form method="PUT" onSubmit={(e) => handleSubmit(e)} className="w-[400px]">
       <fieldset className="flex flex-col gap-10 text-[0.9rem]">
         <p className="text-2xl text-blue-700 text-center font-bold">Account information</p>
         {alert === "SUCCESS" && <Alert severity="success">Your changes have been saved!</Alert>}

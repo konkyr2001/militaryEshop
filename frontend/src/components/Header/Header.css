@@ -1,0 +1,9 @@
+.header-icon {
+  transform: scale(1);
+  transition: transform 200ms ease-in-out;
+  cursor: pointer;
+}
+
+.header-icon:hover {
+  transform: scale(1.2);
+}

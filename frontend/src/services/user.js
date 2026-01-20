@@ -7,10 +7,14 @@ async function checkUser(email, password) {
   try {
     const response = await fetch(`${url}/${email}`);
     const data = await response.json();
+    console.log(password)
+    console.log(data)
     const passwordCheck = await bcrypt.compare(password, data.password);
+    console.log(passwordCheck)
     if (response.ok) {
       if (passwordCheck) {
         data.password = password;
+        console.log(data)
         return {
           found: true,
           data
@@ -38,7 +42,7 @@ async function getUser(email) {
 
 async function getUserById(id) {
   try {
-    const response = await fetch(`${url}/${id}`);
+    const response = await fetch(`${url}/id/${id}`);
     const data = await response.json();
     console.log("get User by id: ", data);
     return data;
@@ -202,9 +206,13 @@ async function signupUser(email, password, role) {
         role,
       }),
     });
-
+    const data = await response.json();
+    console.log(data)
     if (response.ok) {
-      return true;
+      return {
+        found: true,
+        data: data.newUser
+      };
     } else {
       return false;
     }

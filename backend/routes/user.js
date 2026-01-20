@@ -16,7 +16,7 @@ router.get("/email/:email", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/id/:id", async (req, res) => {
   const userID = req.params.id;
 
   try {
