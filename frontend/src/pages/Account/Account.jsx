@@ -1,8 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../App";
-import Tab from "./Tab";
-import MyAccountSection from "./MyAccountSection";
-import Orders from "./Orders";
+import Tab from "./Account/Tab";
+import MyAccountSection from "./Account/MyAccountSection";
+import Orders from "./Orders/Orders";
+import Products from "./Products/Products";
 
 const Account = () => {
   const { user, setUser } = useContext(UserContext);
@@ -36,6 +37,7 @@ const Account = () => {
         <div className="w-full min-width-[500px] h-full m-auto flex justify-center items-center">
           {tabOpen == 1 && <MyAccountSection currentUser={user} />}
           {tabOpen == 2 && <Orders currentUser={user} />}
+          {tabOpen == 3 && <Products currentUser={user} />}
         </div>
       </div>
     </div>

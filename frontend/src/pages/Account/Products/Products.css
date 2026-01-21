@@ -1,0 +1,17 @@
+.user-products > div > ul > li {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+    cursor: pointer;
+    transition: border-radius, background-color ease-in-out 150ms;
+}
+.user-products > div > ul > .active {
+    background-color: rgb(229 231 235);
+}
+
+.user-products > div > ul > li:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+.user-products  form  input {
+    border: 2px solid black;
+}

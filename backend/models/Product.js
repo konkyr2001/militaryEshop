@@ -21,11 +21,9 @@ const productSchema = new mongoose.Schema({
   },
   rating: {
     type: String,
-    required: true,
   },
   ratingAmount: {
     type: String,
-    required: true,
   },
   icon: {
     type: String,

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useContext } from "react";
-import EmailInput from "../../components/Shared/EmailInput";
-import PasswordInput from "../../components/Shared/PasswordInput";
-import SubmitButton from "../../components/Shared/SubmitButton";
+import EmailInput from "../../../components/Shared/EmailInput";
+import PasswordInput from "../../../components/Shared/PasswordInput";
+import SubmitButton from "../../../components/Shared/SubmitButton";
 import DeleteButton from "./DeleteButton";
-import { getUser, updateUser } from "../../services/user";
+import { getUser, updateUser } from "../../../services/user";
 import Alert from "@mui/material/Alert";
-import { UserContext } from "../../App";
+import { UserContext } from "../../../App";
 
 const MyAccountSection = ({ currentUser }) => {
   const [email, setEmail] = useState();

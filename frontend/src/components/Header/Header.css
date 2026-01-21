@@ -1,9 +1,9 @@
-.header-icon {
+.header-icon, .fa-heart {
   transform: scale(1);
   transition: transform 200ms ease-in-out;
   cursor: pointer;
 }
 
-.header-icon:hover {
+.header-icon:hover, .fa-heart:hover {
   transform: scale(1.2);
 }

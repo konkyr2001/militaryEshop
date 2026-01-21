@@ -1,0 +1,12 @@
+// Required Bootstrap core
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+
+// Import ONLY the components you want
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/forms"; // for <Input> or <Form.Control>
+
+// Optional: utilities (safe, no global overrides)
+@import "bootstrap/scss/utilities";

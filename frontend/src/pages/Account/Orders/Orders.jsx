@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getCheckoutsById } from "../../services/checkout";
+import { getCheckoutsById } from "../../../services/checkout.js";
 import { emptyOrderLabel } from "./orderLabel.js";
-import SingleOrder from "./SingleOrder";
+import SingleOrder from "./SingleOrder.jsx";
 
 function Orders({ currentUser }) {
     const [isLoading, setIsLoading] = useState();

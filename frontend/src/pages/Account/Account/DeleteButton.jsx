@@ -1,7 +1,7 @@
 import "./DeleteButton.css";
 import { useState, useEffect, useRef } from "react";
-import { deleteUser } from "../../services/user";
-import Loading from "../../components/Shared/Loading";
+import { deleteUser } from "../../../services/user";
+import Loading from "../../../components/Shared/Loading";
 function DeleteButton({ className, buttonText, currentUser, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

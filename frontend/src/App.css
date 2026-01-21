@@ -23,3 +23,13 @@ img {
 .MuiAlert-colorSuccess {
   background-color: rgb(231, 247, 231) !important;
 }
+
+/* remove arrows on input[type="number"] */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance:textfield;
+}
