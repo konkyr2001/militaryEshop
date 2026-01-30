@@ -100,8 +100,8 @@ const Login = () => {
               <div className="h-full border-l-2 border-gray-300"></div>
             </div>
             <div className="flex flex-col justify-center items-center gap-3 w-[20rem]">
-              <IconButton icon={googleIcon} text="Continue with Google" />
-              <IconButton icon={facebookIcon} text="Continue with Facebook" />
+              <IconButton icon={googleIcon} text="Continue with Google" to="/signup" />
+              <IconButton icon={facebookIcon} text="Continue with Facebook" to="/signup" />
               <IconButton icon={emailIcon} text="Sign up with email" to="/signup" />
             </div>
           </div>

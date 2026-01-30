@@ -265,6 +265,19 @@ async function addUserCheckout(userID, checkoutID) {
     console.log(error.message);
   }
 }
+
+async function getUserCreatedProductsIds(userId) {
+  try {
+    const response = await fetch(`${url}/${userId}/products`);
+    if (response.ok) {
+      const data = await response.json();
+      return data.productsCreated;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 export {
   checkUser,
   getUser,
@@ -276,5 +289,6 @@ export {
   removeFromCart,
   signupUser,
   deleteUser,
-  addUserCheckout
+  addUserCheckout,
+  getUserCreatedProductsIds
 };

@@ -4,7 +4,30 @@ import shoe3 from "../../assets/shoes/red-shoe.png";
 import shoe4 from "../../assets/shoes/white-shoe.png";
 import Item from "../Shared/Item";
 import "./BestSelling.css";
+import { getBestSellers } from "../../services/products";
+import { useState } from "react";
+import { useEffect } from "react";
 function BestSelling() {
+  const [bestSellers, setBestSellers] = useState();
+  useEffect(() => {
+    async function get4BestProducts() {
+      try {
+        const best4Prod = await getBestSellers();
+        if (best4Prod) {
+          setBestSellers(best4Prod);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+
+    };
+    get4BestProducts();
+  }, []);
+
+  if (!bestSellers) {
+    return;
+  }
+
   return (
     <div className="mt-40 font-cabinet pt-10">
       <div className="flex w-full">
@@ -28,44 +51,18 @@ function BestSelling() {
       </div>
       <section className="flex flex-col w-full">
         <ul className="flex gap-x-20 justify-center py-20">
-          <li className="w-[270px]">
-            <Item
-              icon={shoe1}
-              title="HAVIT HV-G92 Gamepad"
-              currentPrice="160"
-              ratingValue={5}
-              ratingAmount={88}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe2}
-              title="HAVIT HV-G92 Gamepad"
-              currentPrice="160"
-              ratingValue={5}
-              ratingAmount={88}
-              paddingTop={"40px"}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe3}
-              title="HAVIT HV-G92 Gamepad"
-              currentPrice="1160"
-              ratingValue={5}
-              ratingAmount={88}
-            />
-          </li>
-          <li className="w-[270px]">
-            <Item
-              icon={shoe4}
-              title="HAVIT HV-G92 Gamepad"
-              currentPrice="160"
-              discount="35"
-              ratingValue={4}
-              ratingAmount={75}
-            />
-          </li>
+          {bestSellers?.map((item) =>
+            <li className="w-[270px]" key={item.id}>
+              <Item
+                id={item.id}
+                icon={item.icon}
+                title={item.title}
+                currentPrice={item.currentPrice}
+                ratingValue={item.rating}
+                ratingAmount={item.ratingAmount}
+              />
+            </li>
+          )}
         </ul>
         <button className="bg-black py-2 px-5 w-fit text-white font-cabinet font-semibold m-auto">
           SHOP NOW

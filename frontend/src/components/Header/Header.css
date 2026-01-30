@@ -5,5 +5,9 @@
 }
 
 .header-icon:hover, .fa-heart:hover {
-  transform: scale(1.2);
+  transform: scale(1.4);
+}
+
+.header-icon:active, .fa-heart:active {
+  transform: scale(1);
 }

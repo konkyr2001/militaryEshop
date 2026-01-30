@@ -1,6 +1,7 @@
 const express = require("express");
 router = express.Router();
 const Checkout = require("../models/Checkout");
+const Product = require("../models/Product");
 
 router.get("/", async (req, res) => {
   try {
@@ -24,6 +25,12 @@ router.post("/", async (req, res) => {
   console.log('checkout: ', checkout)
   try {
     const newCheckout = await checkout.save();
+    for (const item of checkoutParam.items) {
+      await Product.findByIdAndUpdate(
+        item.id, 
+        { $inc: { bought: item.quantity }}
+      );
+    };
     console.log('newCheckout: ', newCheckout)
     res.status(201).json({ checkout });
   } catch (error) {

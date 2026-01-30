@@ -30,7 +30,17 @@ router.get("/id/:id", async (req, res) => {
   }
 });
 
-
+router.get("/:id/products", async (req, res) => {
+  const userId = req.params.id;
+  console.log(userId)
+  try {
+    const user = await User.findById(userId)
+      .populate("productsCreated");
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 router.put("/updateUser", async (req, res) => {
   const { oldUser, newUser } = req.body;
   const user = await User.findOne({ email: oldUser.email });
@@ -197,4 +207,5 @@ router.put("/checkout/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 module.exports = router;

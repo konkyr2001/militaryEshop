@@ -1,5 +1,5 @@
 import { useState, useRef, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../../App";
 import { Rating } from "react-simple-star-rating";
 import "./Item.css";
@@ -18,6 +18,8 @@ function Item({
   discount,
   ratingValue,
   ratingAmount,
+  username = null,
+  date = null,
   paddingTop,
   containerClass,
   listClass,
@@ -63,7 +65,7 @@ function Item({
   }, [user, id]);
 
   async function handleFavourites(like) {
-    if (!user) {
+    if (!user.email) {
       handleModal();
       return;
     }
@@ -87,7 +89,7 @@ function Item({
   }
 
   async function handleCart(cart) {
-    if (!user) {
+    if (!user.email) {
       handleModal();
       return;
     }
@@ -114,6 +116,7 @@ function Item({
   }
 
   function handleModal() {
+    console.log(dialogRef.current)
     if (!dialogRef.current) {
       return;
     }
@@ -127,17 +130,18 @@ function Item({
       "bg-gray-200 h-[250px] flex justify-center items-center relative flex-1 basis-[21%]";
   }
   if (!listClass) {
-    listClass = "flex flex-col gap-1 pt-3";
+    listClass = "flex flex-col gap-0 pt-0";
   }
   return (
     <>
       <div
-        className={containerClass}
+        className={`${containerClass}`}
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
         style={{ paddingTop }}
       >
-        <span className="absolute right-5 top-4 flex justify-center items-center w-[30px] h-[30px] rounded-1/2">
+        {alert && <Alert severity="success">{alert}</Alert>}
+        <span className={`absolute right-5 top-4 flex justify-center items-center w-[30px] h-[30px] rounded-1/2`}>
           <like-effects
             style={{ cursor: "default", zIndex: "50" }}
             checked={favouritesInitialValue}
@@ -184,13 +188,13 @@ function Item({
           ${visible ? "block" : "hidden"}`}
           onClick={() => handleCart(!cartInitialValue)}
         >
-          {!cartInitialValue && <p className="hover:underline">Add To Cart</p>}
-          {cartInitialValue && <p className="hover:underline">Remove From Cart</p>}
+          {!cartInitialValue && <label className="hover:underline cursor-pointer">Add To Cart</label>}
+          {cartInitialValue && <label className="hover:underline cursor-pointer">Remove From Cart</label>}
         </span>
       </div>
-      <span className={listClass}>
+      <span className={`${listClass} ${singlePost ? 'text-right' : ''}`}>
         {singlePost ? (
-          <p className={`color-black font-bold ${titleClass}`}>{title}</p>
+          <h1 className={`color-black font-bold ${titleClass}`}>{title}</h1>
         ) : (
           <Link
             to={`/product/${id}`}
@@ -206,11 +210,17 @@ function Item({
           </p>
         )}
         {!discount && <p>${currentPrice}</p>}
-        <span className="flex">
+        <span>
           <Rating readonly={true} initialValue={ratingValue} />
-          <span className="mt-[5px] ml-1 text-sm">({ratingAmount})</span>
+          <span className="mt-[5px] ml-1 text-sm">({ratingAmount? ratingAmount : 0})</span>
         </span>
-        {!user && <ReminderDialog ref={dialogRef} handleModal={handleModal} />}
+        {singlePost && username && (
+          <div className="flex flex-col mt-10">
+            <p><label>Owner:</label> {username}</p>
+            <p><label>Release date: </label>{date.day + '/' + date.month + '/' + date.year}</p>
+          </div>
+        )}
+        {!user.email && <ReminderDialog ref={dialogRef} handleModal={handleModal} />}
       </span>
     </>
   );

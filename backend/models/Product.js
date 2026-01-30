@@ -19,15 +19,36 @@ const productSchema = new mongoose.Schema({
   discount: {
     type: String,
   },
-  rating: {
-    type: String,
-  },
+  ratings: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      rating: {
+        type: Number
+      },
+      ratingText: {
+        type: String
+      },
+      date: {
+        type: Date
+      }
+    },
+  ],
   ratingAmount: {
     type: String,
   },
   icon: {
     type: String,
     required: true,
+  },
+  bought: {
+    type: Number,
+    default: 0,
+  },
+  description: {
+    type: String,
   },
   likes: {
     type: Number,

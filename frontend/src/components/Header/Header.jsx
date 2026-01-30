@@ -73,19 +73,19 @@ function Header() {
             <Link to="/">Women</Link>
           </li>
           <li>
-            <Link to="/product">Men</Link>
+            <Link to="/">Men</Link>
           </li>
           <li>
-            <Link to="/contact">Kids</Link>
+            <Link to="/">Kids</Link>
           </li>
           <li>
-            <Link to="/contact">Classic</Link>
+            <Link to="/">Classic</Link>
           </li>
           <li>
-            <Link to="/contact">Sport</Link>
+            <Link to="/">Sport</Link>
           </li>
           <li>
-            <Link to="/contact">Sale</Link>
+            <Link to="/">Sale</Link>
           </li>
         </ul>
         <ul className="flex ml-auto space-x-8">

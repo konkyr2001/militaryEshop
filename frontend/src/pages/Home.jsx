@@ -70,7 +70,6 @@ function Home() {
         </div>
         <Categories />
         <Icons />
-        <Footer />
       </div>
     </>
   );

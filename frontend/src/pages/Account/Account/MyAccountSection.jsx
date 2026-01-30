@@ -55,14 +55,10 @@ const MyAccountSection = ({ currentUser }) => {
 
   const changeEmail = () => {
     setDisableEmail(!disableEmail);
-    // emailRef.current.focus() should be here but the DOM didnt finish with the hover
-    //  yet so we create a useEffect and on disableEmail change it gets called
   };
 
   const changePassword = () => {
     setDisablePassword(!disablePassword);
-    // passwordRef.current.focus() should be here but the DOM didnt finish with the hover
-    // yet so we create a useEffect and on disableEmail change it gets called
   };
 
   async function handleSubmit(event) {
@@ -85,7 +81,6 @@ const MyAccountSection = ({ currentUser }) => {
         return false;
       }
 
-      // getting the new updated currentUser info
       const updates = {};
       if (email !== initialUser.email) updates.email = email;
       if (password !== initialUser.password) updates.password = password;

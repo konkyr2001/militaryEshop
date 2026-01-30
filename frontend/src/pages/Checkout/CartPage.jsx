@@ -121,7 +121,7 @@ function Cart() {
             return;
         }
 
-        if (confirm("Press a button!")) {
+        if (confirm(`By clicking ok, you will buy this ${[items.length == 1 ? 'product' : 'products']}!`)) {
             const itemsQuantity = items.map((item) => {
                 console.log("itemID: ",localStorage.getItem(item.id))
                 const quantity = localStorage.getItem(item.id) ? localStorage.getItem(item.id) : 1;
@@ -130,7 +130,7 @@ function Cart() {
                     title: item.title,
                     icon: item.icon,
                     price: item.currentPrice,
-                    quantity
+                    quantity,
                 }
             });
             console.log(userState)
