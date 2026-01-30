@@ -37,6 +37,23 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cart",
     }
+  ],
+  ratings: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      rating: {
+        type: Number
+      },
+      ratingText: {
+        type: String
+      },
+      date: {
+        type: Date
+      }
+    }
   ]
 }, {
   timestamps: true

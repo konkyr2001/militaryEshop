@@ -1,9 +1,13 @@
-.header-icon {
+.header-icon, .fa-heart {
   transform: scale(1);
   transition: transform 200ms ease-in-out;
   cursor: pointer;
 }
 
-.header-icon:hover {
-  transform: scale(1.2);
+.header-icon:hover, .fa-heart:hover {
+  transform: scale(1.4);
+}
+
+.header-icon:active, .fa-heart:active {
+  transform: scale(1);
 }

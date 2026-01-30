@@ -1,8 +1,10 @@
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../App";
-import Tab from "./Tab";
-import MyAccountSection from "./MyAccountSection";
-import Orders from "./Orders";
+import Tab from "./Account/Tab";
+import MyAccountSection from "./Account/MyAccountSection";
+import Orders from "./Orders/Orders";
+import Products from "./Products/Products";
+import Reviews from "./Rates/Rates";
 
 const Account = () => {
   const { user, setUser } = useContext(UserContext);
@@ -25,10 +27,14 @@ const Account = () => {
               <i className="fa-solid fa-basket-shopping mr-2"></i>
               Orders
             </Tab>
+            <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="3">
+              <i className="fa-regular fa-star mr-2 "></i>
+              Rates
+            </Tab>
             {user && user.role === "seller" && (
-              <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="3">
+              <Tab tabOpen={tabOpen} setTabOpen={setTabOpen} number="4">
                 <i className="fa-solid fa-shop mr-2"></i>
-                My Products
+                Products
               </Tab>
             )}
           </ul>
@@ -36,6 +42,8 @@ const Account = () => {
         <div className="w-full min-width-[500px] h-full m-auto flex justify-center items-center">
           {tabOpen == 1 && <MyAccountSection currentUser={user} />}
           {tabOpen == 2 && <Orders currentUser={user} />}
+          {tabOpen == 3 && <Reviews currentUser={user} />}
+          {tabOpen == 4 && <Products currentUser={user} />}
         </div>
       </div>
     </div>

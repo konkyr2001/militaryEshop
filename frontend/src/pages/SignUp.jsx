@@ -159,18 +159,17 @@ const SignUp = () => {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className={`text-gray-400 border rounded-sm p-2 px-3 tracking-wider w-full
-                  ${roleError ? "border-red-500" : ""} focus:outline-blue-300 focus:border-blue-500
-                   ${role === "seller" ? "bg-red-200 text-gray-600" : role === "customer" ? "bg-blue-200 text-gray-600" : "text-gray-400"}`}
+                  className={`text-gray-800 border rounded-sm p-2 px-3 tracking-wider w-full
+                  ${roleError ? "border-red-500" : ""} focus:outline-blue-300 focus:border-blue-500`}
                   required
                 >
-                  <option value="DEFAULT" disabled className="text-gray-400 bg-gray-100">
+                  <option value="DEFAULT" disabled className="text-gray-800 bg-gray-100">
                     Choose your role*
                   </option>
-                  <option value="customer" className="text-gray-600 bg-blue-200 hover:bg-blue-200">
+                  <option value="customer" className="text-gray-800">
                     Customer
                   </option>
-                  <option value="seller" className="text-gray-600 bg-red-200 hover:bg-blue-200">
+                  <option value="seller" className="text-gray-800">
                     Seller
                   </option>
                 </select>

@@ -19,9 +19,9 @@ const ReminderDialog = forwardRef(({ handleModal }, ref) => {
       <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
         Sign Up or Log In to Continue
       </h1>
-      <p className="text-gray-600 text-center mb-6">
+      <h5 className="text-gray-600 text-center mb-6">
         Save your favorite items or add them to your cart by creating an account or logging in.
-      </p>
+      </h5>
       <div className="flex justify-center gap-4">
         <Link
           to="/login"

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getCheckoutsById } from "../../services/checkout";
+import { getCheckoutsById } from "../../../services/checkout.js";
 import { emptyOrderLabel } from "./orderLabel.js";
-import SingleOrder from "./SingleOrder";
+import SingleOrder from "./SingleOrder.jsx";
+import Loading from "../../../components/Shared/Loading.jsx";
 
 function Orders({ currentUser }) {
     const [isLoading, setIsLoading] = useState();
@@ -21,7 +22,7 @@ function Orders({ currentUser }) {
         setIsLoading(false);
     }, []);
 
-    if (isLoading) return null;
+    if (isLoading) return <Loading />;
 
     if (checkouts && checkouts.length == 0) {
         return <span className="text-center">

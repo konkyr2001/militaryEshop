@@ -1,0 +1,89 @@
+.user-products > div > ul > li > button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: border-radius, background-color ease-in-out 150ms;
+}
+.user-products > div > ul > li > .active {
+    background-color: rgb(229 231 235);
+}
+
+.user-products > div > ul > li > button:hover {
+    background-color: rgb(207, 207, 207);
+}
+.user-products > div > ul > li > button:focus {
+    background-color: rgb(229 231 235);
+}
+
+.user-products form {
+    box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.06);
+    border-radius: 5px;
+    border: 1px solid #E5E7EB;
+
+}
+.user-products form h1 {
+    color: #111827;    
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.user-products form > div:not(.MuiPaper-root) {
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-products form div label {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    color: #6B7280;
+}
+
+.user-products form div p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    color: #6B7280;
+}
+
+.user-products form input:not([type="checkbox"]), textarea {
+    border: 2px solid #E5E7EB;
+    border-radius: 5px;
+    width: 100%;
+    padding: 2px 5px;
+}
+
+.user-products form div:focus-within label {
+  color: #111827;
+}
+
+.user-products form {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.user-products form input,
+.user-products form textarea {
+  border: 2px solid #E5E7EB;
+  border-radius: 6px;
+  width: 100%;
+  transition: 
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.user-products form input:not([type="checkbox"]):hover,
+.user-products form textarea:hover {
+  border-color: #D1D5DB;
+}
+
+.user-products form input:not([type="checkbox"]):focus,
+.user-products form textarea:focus {
+  outline: none;
+  border-color: #c5c5c5;
+}
+
+.user-products form input.error,
+.user-products form .error {
+    border-color: rgb(243, 146, 146);
+}

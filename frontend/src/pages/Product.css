@@ -1,0 +1,20 @@
+.reviews .star-svg {
+  width: 40px;
+  height: 40px;
+}
+
+.ratings .star-svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ratings label {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ratings p {
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+}

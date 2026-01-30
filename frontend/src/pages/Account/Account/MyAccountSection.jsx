@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useContext } from "react";
-import EmailInput from "../../components/Shared/EmailInput";
-import PasswordInput from "../../components/Shared/PasswordInput";
-import SubmitButton from "../../components/Shared/SubmitButton";
+import EmailInput from "../../../components/Shared/EmailInput";
+import PasswordInput from "../../../components/Shared/PasswordInput";
+import SubmitButton from "../../../components/Shared/SubmitButton";
 import DeleteButton from "./DeleteButton";
-import { getUser, updateUser } from "../../services/user";
+import { getUser, updateUser } from "../../../services/user";
 import Alert from "@mui/material/Alert";
-import { UserContext } from "../../App";
+import { UserContext } from "../../../App";
 
 const MyAccountSection = ({ currentUser }) => {
   const [email, setEmail] = useState();
@@ -55,14 +55,10 @@ const MyAccountSection = ({ currentUser }) => {
 
   const changeEmail = () => {
     setDisableEmail(!disableEmail);
-    // emailRef.current.focus() should be here but the DOM didnt finish with the hover
-    //  yet so we create a useEffect and on disableEmail change it gets called
   };
 
   const changePassword = () => {
     setDisablePassword(!disablePassword);
-    // passwordRef.current.focus() should be here but the DOM didnt finish with the hover
-    // yet so we create a useEffect and on disableEmail change it gets called
   };
 
   async function handleSubmit(event) {
@@ -85,7 +81,6 @@ const MyAccountSection = ({ currentUser }) => {
         return false;
       }
 
-      // getting the new updated currentUser info
       const updates = {};
       if (email !== initialUser.email) updates.email = email;
       if (password !== initialUser.password) updates.password = password;
