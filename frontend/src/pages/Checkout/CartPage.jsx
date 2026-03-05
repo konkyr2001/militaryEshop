@@ -12,7 +12,6 @@ import { UserContext } from "../../App";
 import Home from "../Home";
 import { createCheckout } from "../../services/checkout";
 
-const _SHOEPATH = "/src/assets/shoes/";
 const defaultLocation = {
     longitude: 23.7162,
     latitude: 37.9838,
@@ -29,7 +28,7 @@ function Cart() {
     });
     const [items, setItems] = useState([]);
     const [userState, setUserState] = useState();
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const [subtotal, setSubtotal] = useState(0);
     const [shippingCost, setShippingCost] = useState(0);
     const [total, setTotal] = useState(0);
@@ -56,13 +55,17 @@ function Cart() {
 
     useEffect(() => {
         async function getProduct() {
-            setUserState(user);
-            const product = await getProductById(id);
-            setItems((oldArr) => [...oldArr, product]);
-            setIsLoading(false);
+            try {
+                setUserState(user);
+                const product = await getProductById(id);
+                setItems((oldArr) => [...oldArr, product]);
+                setIsLoading(false);
+            } catch (error) {
+                console.log(error.message);
+            }
+
         }
         async function getUserCart() {
-            console.log("user: ",user);
             const currentUser = await getUserById(id);
             setUserState(currentUser);
             const products = await getProductsById(currentUser.cart);
@@ -95,8 +98,8 @@ function Cart() {
                     cart: response.cart
                 });
                 localStorage.removeItem(productID);
-                setItems(prevItems => 
-                    prevItems.filter(item => item.id !== productID)     
+                setItems(prevItems =>
+                    prevItems.filter(item => item.id !== productID)
                 );
                 setSubtotal((prevSubTotal) => prevSubTotal - subtotal);
                 setAlert({
@@ -106,7 +109,7 @@ function Cart() {
                 });
             }
         } catch (error) {
-            console.log("error");
+            console.log(error.message);
         }
     }
 
@@ -123,7 +126,6 @@ function Cart() {
 
         if (confirm(`By clicking ok, you will buy this ${[items.length == 1 ? 'product' : 'products']}!`)) {
             const itemsQuantity = items.map((item) => {
-                console.log("itemID: ",localStorage.getItem(item.id))
                 const quantity = localStorage.getItem(item.id) ? localStorage.getItem(item.id) : 1;
                 return {
                     id: item.id,
@@ -133,7 +135,6 @@ function Cart() {
                     quantity,
                 }
             });
-            console.log(userState)
             const checkoutObject = {
                 buyer: userState.id,
                 items: itemsQuantity,
@@ -151,7 +152,6 @@ function Cart() {
                 if (checkout) {
                     const userCheckout = await addUserCheckout(userState.id, checkout.id);
                     if (userCheckout) {
-                        console.log("ola entaksei ", userCheckout);
                         items.map((item) => {
                             localStorage.removeItem(item.id);
                         });
@@ -190,7 +190,7 @@ function Cart() {
                         return <div key={item.id} className="flex items-center relative max-h-[100px] w-full border-slate-200 border-b-2 pb-2 mb-5">
                             <CartItem
                                 id={item.id}
-                                image={`${_SHOEPATH}${item.icon}`}
+                                image={item.icon.url}
                                 title={item.title}
                                 currentPrice={item.currentPrice}
                                 removeProduct={removeProduct}

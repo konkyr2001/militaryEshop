@@ -8,13 +8,11 @@ function Orders({ currentUser }) {
     const [isLoading, setIsLoading] = useState();
     const [checkouts, setCheckouts] = useState([]);
     const randomNumber = Math.floor(Math.random() * emptyOrderLabel.length)
-    console.log(currentUser)
     useEffect(() => {
         async function getCheckouts() {
             const userCheckouts = await getCheckoutsById(currentUser.checkouts);
             if (userCheckouts) {
                 setCheckouts(userCheckouts);
-                console.log(userCheckouts)
             }
         };
         setIsLoading(true);

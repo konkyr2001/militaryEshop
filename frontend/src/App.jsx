@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import Product from "./pages/Product";
+import Product from "./pages/Product/Product";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import React from "react";
 import ProtectedAccountRoute from "./pages/Account/ProtectedAccountRoute";
 import ProtectedCartRoute from "./pages/Checkout/ProtectedCartRoute";
+import Error from "./pages/Error";
 export const UserContext = React.createContext(null);
 function App() {
   const [user, setUser] = useState({
@@ -34,6 +35,7 @@ function App() {
               <Route path="account/:id" element={<ProtectedAccountRoute />} />
               <Route path="cart/:id" element={<ProtectedCartRoute />} />
               <Route path="/account/cart/:id" element={<ProtectedCartRoute />} />
+              <Route path="/error" element={<Error />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>

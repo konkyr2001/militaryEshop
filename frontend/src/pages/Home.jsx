@@ -39,7 +39,6 @@ function Home() {
       }
     }
   }, [location.state]);
-  console.log("localstorage, ",localStorage)
 
   // when component get opened it checks if the user is remembered and log him in
   useEffect(() => {
@@ -60,13 +59,16 @@ function Home() {
 
   return (
     <>
-    {console.log(user)}
       <div className="">
         <div className="w-[90%] m-auto">
           <ShopAll />
-          <ShopSection />
+          <div className="relative min-h-[300px] font-cabinet mt-44 pb-10">
+            <ShopSection />
+          </div>
           <Sponsors />
-          <BestSelling />
+          <div className="min-h-[300px] mt-40 font-cabinet pt-10">
+            <BestSelling />
+          </div>
         </div>
         <Categories />
         <Icons />

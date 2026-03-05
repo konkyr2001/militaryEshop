@@ -59,8 +59,10 @@ async function getReviewProduct(productsId) {
 async function getProductById(id) {
   try {
     const response = await fetch(`${url}/${id}`);
-    const product = await response.json();
-    return product;
+    if (response.ok) {
+      const product = await response.json();
+      return product;
+    }
   } catch (error) {
     console.log(error.message);
     return null;
@@ -80,21 +82,25 @@ async function getBestSellers() {
 
 async function createNewProduct(createdProduct, userId) {
   try {
+    const data = new FormData();
+    data.append("title", createdProduct.title);
+    data.append("creator", createdProduct.creator);
+    data.append("oldPrice", createdProduct.oldPrice);
+    data.append("currentPrice", createdProduct.currentPrice);
+    data.append("discount", createdProduct.discount);
+    data.append("description", createdProduct.description);
+    data.append("iconName", createdProduct.iconName);
+    data.append("userId", userId);
+    data.append("file", createdProduct.file);
     const response = await fetch(`${url}/create`, {
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        createdProduct,
-        userId
-      }),
+      body: data,
     });
-    const data = await response.json();
+    const result = await response.json();
     if (response.ok) {
       return {
         found: true,
-        data: data.newProduct
+        data: result.newProduct
       };
     } else {
       return false;
@@ -117,7 +123,7 @@ async function deleteProduct(productId, userId) {
         userId
       })
     });
-    const data = response.json();
+    const data = await response.json();
     if (response.ok) {
       return {
         found: true,
@@ -143,11 +149,12 @@ async function createReviewToProduct(productId, userId, ratingInfo) {
         ratingInfo
       })
     });
-    const data = response.json();
     if (response.ok) {
+      const data = await response.json();
+
       return {
         found: true,
-        data: data.message
+        data: data.data
       }
     }
   } catch (error) {
@@ -156,7 +163,7 @@ async function createReviewToProduct(productId, userId, ratingInfo) {
   }
 }
 
-async function deleteReview(productId, userId) {
+async function deleteReview(productId, reviewRating, userId) {
   try {
     const response = await fetch(`${url}/deleteRating`, {
       method: 'DELETE',
@@ -165,6 +172,7 @@ async function deleteReview(productId, userId) {
       },
       body: JSON.stringify({
         productId,
+        reviewRating,
         userId
       })
 

@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
 
-const _SHOEPATH = "/src/assets/shoes/";
 function SingleProduct({ product, products, setProducts, userId, setAlert, setProductAlert }) {
     const date = new Date(product.createdAt);
     const dateText = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'long' })} ${date.getFullYear()}`
@@ -29,7 +28,7 @@ function SingleProduct({ product, products, setProducts, userId, setAlert, setPr
                 <Link
                     to={`/product/${product.id}`}
                 >
-                    <img src={`${_SHOEPATH}${product.icon}`} className="h-24" />
+                    <img src={product.icon.url} className="h-24 w-24" />
                 </Link>
             </span>
             <span>
@@ -41,8 +40,7 @@ function SingleProduct({ product, products, setProducts, userId, setAlert, setPr
                 <p className="text-sm text-gray-600">Order Date: {dateText}</p>
                 <p className="text-sm text-gray-600">Favourites: {product.likes}</p>
                 <p className="text-sm text-gray-600">Sold: {product.bought}</p>
-                <p className="text-sm text-gray-600">Ratings: 
-                    {!product.ratings ? 0 : products.ratings}/5 ({!product.ratingAmount ? 0 : product.ratingAmount})</p>
+                <p className="text-sm text-gray-600">Ratings: {product.ratings.length == 0 ? '0' : products.ratings}/5 ({!product.ratingsCounter ? 0 : product.ratingsCounter})</p>
             </span>
             <span className="ml-10 text-sm">
                 {product.discount && (

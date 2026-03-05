@@ -46,11 +46,11 @@ function LoggedInProfileDialog({ imageRef, setIsDialogOpen, user }) {
         <div className="triangle-up border-b-gray-300 border-b-[15px] absolute right-9 -top-[0.9rem]"></div>
         <div className="p-5 border border-gray-300 rounded-lg min-w-52">
           <ul className="pl-2 flex flex-col gap-2">
-            <li className="hover:underline decoration-blue-500 cursor-pointer">
-              <Link to={`/account/${user.id}`}>My Account</Link>
+            <li className="decoration-blue-500">
+              <Link className="hover:underline cursor-pointer" to={`/account/${user.id}`}>My Account</Link>
             </li>
-            <li className="hover:underline decoration-red-500 text-red-500 cursor-pointer">
-              <Link onClick={logout}>Log out</Link>
+            <li className="decoration-red-500 text-red-500">
+              <Link className="hover:underline cursor-pointer" onClick={logout}>Log out</Link>
             </li>
           </ul>
         </div>

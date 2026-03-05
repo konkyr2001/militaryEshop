@@ -26,7 +26,7 @@ function CartItem({ id, image, title, currentPrice, removeProduct, setSubtotal }
 
     return <>
         <span className="pl-10 w-[50%] flex items-center gap-5 ">
-            <img className="w-20" src={image} />
+            <img className="w-20 h-20" src={image} />
             <h2 className="font-tiktok font-light">{title}</h2>
         </span>
         <span className="flex-1">

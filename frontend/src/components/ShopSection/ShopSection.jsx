@@ -1,24 +1,63 @@
 import Item from "../Shared/Item";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../../services/products";
-
-const _SHOEPATH = "/src/assets/shoes/";
-// const _SHOEPATH = "../../assets/shoes/";
+import Loading from "../Shared/Loading";
 
 function ShopSection() {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState('');
+  const [error, setError] = useState('');
   useEffect(() => {
     async function getProducts() {
       const allProducts = await getAllProducts();
       if (allProducts.found) {
         setProducts(allProducts.products);
+        setError(false);
+      } else {
+        setError(true);
+        setProducts([]);
       }
+      setIsLoading(false);
     }
 
+    setIsLoading(true);
     getProducts();
   }, []);
+
+  if (isLoading) {
+    return <Loading display='block' />
+  }
+  if (error || products.length == 0) {
+    return <div className="flex flex-col h-[300px] gap-2 justify-center items-center">
+      {error && <>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          Oops! Something went wrong
+        </h1>
+        <p className="text-gray-500 mb-6">
+          We’re sorry, but an unexpected error has occurred. Please try again
+          or return to the homepage.
+        </p>
+      </>}
+      {products.length == 0 && <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        There are currently 0 products published yet!
+      </h1>}
+    </div>
+  }
+
+  if (error) {
+    return <div className="flex flex-col h-[300px] gap-2 justify-center items-center">
+      <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        Oops! Something went wrong
+      </h1>
+      <p className="text-gray-500 mb-6">
+        We’re sorry, but an unexpected error has occurred. Please try again
+        or return to the homepage.
+      </p>
+    </div>
+  }
+
   return (
-    <div className="font-cabinet mt-44 pb-10">
+    <>
       <ul className="flex gap-x-10">
         <li>
           <button
@@ -44,20 +83,20 @@ function ShopSection() {
               <li className="w-[270px]" key={product.id}>
                 <Item
                   id={product.id}
-                  icon={`${_SHOEPATH}${product.icon}`}
+                  icon={product.icon.url}
                   title={product.title}
                   oldPrice={product.oldPrice}
                   currentPrice={product.currentPrice}
                   discount={product.discount}
-                  ratingValue={product.rating}
-                  ratingAmount={product.ratingAmount}
+                  ratingsSum={product.ratingsSum}
+                  ratingsCounter={product.ratingsCounter}
                 />
               </li>
             );
           })}
         </ul>
       </section>
-    </div>
+    </>
   );
 }
 

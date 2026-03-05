@@ -2,6 +2,10 @@ const express = require("express");
 router = express.Router();
 const Product = require("../models/Product");
 const User = require("../models/User");
+const { PutObjectCommand, S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { v4: uuidv4 } = require("uuid");
+const multer = require('multer');
+const upload = multer();
 
 router.get("/", async (req, res) => {
   try {
@@ -9,83 +13,6 @@ router.get("/", async (req, res) => {
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }
-});
-
-router.get("/defaults", async (req, res) => {
-  const product1 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "5",
-    ratingAmount: "88",
-    icon: "white-shoe.png",
-  });
-  const product2 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "5",
-    ratingAmount: "88",
-    icon: "red-shoe.png",
-  });
-  const product3 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    oldPrice: "1160",
-    currentPrice: "754",
-    discount: "35",
-    rating: "5",
-    ratingAmount: "75",
-    icon: "cyan-shoe.png",
-  });
-  const product4 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "4",
-    ratingAmount: "88",
-    icon: "blue-shoe.png",
-  });
-  const product5 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "5",
-    ratingAmount: "88",
-    icon: "cyan-shoe.png",
-  });
-  const product6 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    oldPrice: "160",
-    currentPrice: "104",
-    rating: "5",
-    discount: "35",
-    ratingAmount: "75",
-    icon: "blue-shoe.png",
-  });
-  const product7 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "5",
-    ratingAmount: "88",
-    icon: "red-shoe.png",
-  });
-  const product8 = new Product({
-    title: "HAVIT HV-G92 Gamepad",
-    currentPrice: "160",
-    rating: "5",
-    ratingAmount: "88",
-    icon: "white-shoe.png",
-  });
-
-  try {
-    const newUser1 = await product1.save();
-    const newUser2 = await product2.save();
-    const newUser3 = await product3.save();
-    const newUser4 = await product4.save();
-    const newUser5 = await product5.save();
-    const newUser6 = await product6.save();
-    const newUser7 = await product7.save();
-    const newUser8 = await product8.save();
-    res.status(201).json({ newUser1 });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
 });
 
@@ -104,7 +31,7 @@ router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
       .populate("creator", "email")
-      .populate("ratings.userId", "email");
+      .populate("ratings.user", "email");
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
@@ -120,7 +47,7 @@ router.post("/byIds", async (req, res) => {
 
     const products = await Product.find({ _id: { $in: ids } })
       .populate("creator", "email")
-      .populate("ratings.userId", "email");
+      .populate("ratings.user", "email");
 
     res.status(200).json(products);
   } catch (error) {
@@ -129,9 +56,39 @@ router.post("/byIds", async (req, res) => {
 });
 
 
-router.post('/create', async (req, res) => {
+router.post('/create', upload.single('file'), async (req, res) => {
   try {
-    const { createdProduct, userId } = req.body;
+    const { userId, iconName, ...createdProduct } = req.body;
+    const file = req.file;
+    const accessKeyId = process.env.S3_ACCESS_KEY;
+    const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
+    const bucket = process.env.S3_BUCKET_NAME;
+    const region = process.env.S3_BUCKET_REGION;
+
+    const s3 = new S3Client({
+      credentials: {
+        accessKeyId,
+        secretAccessKey
+      },
+      region
+    });
+
+    const fileKey = `upload/${uuidv4()}_${iconName}`;
+    await s3.send(new PutObjectCommand({
+      Bucket: bucket,
+      Key: fileKey,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    }));
+
+    const s3Url = `https://${bucket}.s3.${region}.amazonaws.com/${fileKey}`;
+
+    createdProduct.icon = {
+      name: iconName,
+      url: s3Url,
+      key: fileKey,
+    };
+
     const product = new Product(createdProduct);
     const newProduct = await product.save();
     await User.findByIdAndUpdate(
@@ -139,7 +96,6 @@ router.post('/create', async (req, res) => {
       {
         $push: { productsCreated: newProduct._id }
       });
-    console.log("new Product: ", newProduct);
     res.status(201).json({ newProduct })
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -149,12 +105,29 @@ router.post('/create', async (req, res) => {
 router.delete('/delete', async (req, res) => {
   try {
     const { productId, userId } = req.body;
-    await Product.findByIdAndDelete(productId);
+    const product = await Product.findByIdAndDelete(productId);
     await User.findByIdAndUpdate(
       userId,
       {
         $pull: { productsCreated: productId }
       });
+
+    const accessKeyId = process.env.S3_ACCESS_KEY;
+    const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
+    const bucket = process.env.S3_BUCKET_NAME;
+    const region = process.env.S3_BUCKET_REGION;
+
+    const s3 = new S3Client({
+      credentials: {
+        accessKeyId,
+        secretAccessKey
+      },
+      region
+    });
+    await s3.send(new DeleteObjectCommand({
+      Bucket: bucket,
+      Key: product.icon.key,
+    }));
     res.status(200).json({ message: 'Product and user deleted' })
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -165,7 +138,7 @@ router.post('/ratedByUser', async (req, res) => {
   try {
     const { productsId } = req.body;
     const products = await Product.find({
-      '_id': {
+      _id: {
         $in: productsId
       }
     });
@@ -179,34 +152,31 @@ router.post('/ratedByUser', async (req, res) => {
 router.post('/addRating', async (req, res) => {
   try {
     const { productId, userId, ratingInfo } = req.body;
-    const product = await Product.findById(productId);
-    let flag = false;
-    for (const rating in product.ratings) {
-      if (rating.userId == userId) {
-        flag = true;
-      }
-    }
-    if (flag) return;
 
-    await Product.findByIdAndUpdate(
+    const ratingCreated = await Product.findByIdAndUpdate(
       productId,
       {
         $push: {
           ratings: {
-            userId,
+            user: userId,
             rating: ratingInfo.rating,
             ratingText: ratingInfo.ratingText,
             date: ratingInfo.date
           }
+        },
+        $inc: {
+          ratingsSum: ratingInfo.rating,
+          ratingsCounter: 1
         }
-      }
-    )
+      },
+      { new: true }
+    );
     await User.findByIdAndUpdate(
       userId,
       {
         $push: {
           ratings: {
-            productId,
+            product: productId,
             rating: ratingInfo.rating,
             ratingText: ratingInfo.ratingText,
             date: ratingInfo.date
@@ -214,7 +184,16 @@ router.post('/addRating', async (req, res) => {
         }
       }
     )
-    res.status(200).json({ message: 'Rating uploaded' })
+    const index = ratingCreated.ratings.at(-1);
+    res.status(200).json({
+      data: {
+        userId,
+        rating: ratingInfo.rating,
+        ratingText: ratingInfo.ratingText,
+        date: ratingInfo.date,
+        _id: index._id
+      }
+    })
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -222,22 +201,24 @@ router.post('/addRating', async (req, res) => {
 
 router.delete('/deleteRating', async (req, res) => {
   try {
-    const { productId, userId } = req.body;
+    const { productId, reviewRating, userId } = req.body;
     await Product.findByIdAndUpdate(
       productId,
       {
-        $pull: { 'ratings': { userId } }
+        $pull: { 'ratings': { user: userId } },
+        $inc: {
+          ratingsSum: -reviewRating,
+          ratingsCounter: -1
+        }
       }
     )
     await User.findByIdAndUpdate(
-      userId, 
+      userId,
       {
-        $pull: {'ratings': { productId }}
+        $pull: { 'ratings': { product: productId } },
       }
     )
     res.status(200).json({ message: 'Product and user ratings deleted' })
-    console.log(productId)
-    console.log(userId)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

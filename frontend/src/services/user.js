@@ -5,16 +5,12 @@ const url = "http://localhost:3000/users";
 
 async function checkUser(email, password) {
   try {
-    const response = await fetch(`${url}/${email}`);
+    const response = await fetch(`${url}/email/${email}`);
     const data = await response.json();
-    console.log(password)
-    console.log(data)
     const passwordCheck = await bcrypt.compare(password, data.password);
-    console.log(passwordCheck)
     if (response.ok) {
       if (passwordCheck) {
         data.password = password;
-        console.log(data)
         return {
           found: true,
           data
@@ -33,7 +29,6 @@ async function getUser(email) {
   try {
     const response = await fetch(`${url}/email/${email}`);
     const data = await response.json();
-    console.log("get User by email: ", data);
     return data;
   } catch (error) {
     throw error.message;
@@ -44,7 +39,6 @@ async function getUserById(id) {
   try {
     const response = await fetch(`${url}/id/${id}`);
     const data = await response.json();
-    console.log("get User by id: ", data);
     return data;
   } catch (error) {
     throw error.message;
@@ -68,7 +62,6 @@ async function updateUser(oldUser, newUser) {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       return {
         found: true,
         user: {
@@ -94,7 +87,6 @@ async function addToFavourites(email, productId) {
         productId,
       }),
     });
-    console.log(response);
     if (response.ok) {
       const data = await response.json();
       return {
@@ -112,7 +104,6 @@ async function addToFavourites(email, productId) {
 
 async function removeFromFavourites(email, productId) {
   try {
-    console.log("remove");
     const response = await fetch(`${url}/favourites/remove/${email}`, {
       method: "PUT",
       headers: {
@@ -147,7 +138,6 @@ async function addToCart(email, productId) {
       }),
     });
 
-    console.log(response);
     if (response.ok) {
       const data = await response.json();
       return {
@@ -174,7 +164,6 @@ async function removeFromCart(email, productId) {
         productId,
       }),
     });
-    console.log(response);
     if (response.ok) {
       const data = await response.json();
       return {
@@ -193,8 +182,6 @@ async function removeFromCart(email, productId) {
 async function signupUser(email, password, role) {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(password);
-    console.log(hashedPassword);
     const response = await fetch(`${url}/signup`, {
       method: "POST",
       headers: {
@@ -207,7 +194,6 @@ async function signupUser(email, password, role) {
       }),
     });
     const data = await response.json();
-    console.log(data)
     if (response.ok) {
       return {
         found: true,

@@ -90,6 +90,7 @@ function Header() {
         </ul>
         <ul className="flex ml-auto space-x-8">
           <li className="h-[30px] pt-1 flex items-center relative">
+            
             <i
               className="fa-regular fa-heart header-icon text-2xl cursor-pointer"
               onClick={handleFavourties}
