@@ -1,4 +1,3 @@
-const _SHOEPATH = "/src/assets/shoes/";
 function SingleOrder({ checkout }) {
     const date = new Date(checkout.createdAt);
     const dateText = `${date.getDate()} ${date.toLocaleString('en-US', { month: 'long' })} ${date.getFullYear()}`
@@ -9,7 +8,7 @@ function SingleOrder({ checkout }) {
                 key={item.id}
             >
                 <span className="min-w-32 flex justify-center items-center">
-                    <img src={`${_SHOEPATH}${item.icon}`} className="h-24" />
+                    <img src={item.icon.url} className="h-24 w-24" />
                 </span>
                 <span>
                     <h2 className="text-base text-black font-tiktok font-light">{item.title}</h2>
@@ -18,6 +17,7 @@ function SingleOrder({ checkout }) {
                 <span className="ml-10 text-sm">
                     <p>Quantity: {item.quantity}</p>
                     <p>Price: ${item.price}</p>
+                    <p>Shipping Cost: ${checkout.shippingCost}</p>
                     <p>Address: {checkout.shippingLocation.message}</p>
                 </span>
             </div>

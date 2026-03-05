@@ -18,8 +18,18 @@ const checkoutSchema = new mongoose.Schema({
                 required: true
             },
             icon: {
-                type: String,
-                required: true
+                name: {
+                    type: String,
+                    required: true,
+                },
+                url: {
+                    type: String,
+                    required: true,
+                },
+                key: {
+                    type: String,
+                    required: true,
+                }
             },
             price: {
                 type: Number,

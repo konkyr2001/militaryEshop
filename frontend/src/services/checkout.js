@@ -5,8 +5,16 @@ const url = "http://localhost:3000/checkout";
 
 async function getCheckoutsById(ids) {
     try {
-        const query = ids.map(id => `ids=${id}`).join("&");
-        const response = await fetch(`${url}?${query}`);
+        if (!ids) return;
+        const response = await fetch(`${url}/getCheckouts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ids
+            })
+        });
         if (response.ok) {
             const checkouts = await response.json();
             return checkouts;
@@ -15,12 +23,12 @@ async function getCheckoutsById(ids) {
         }
     } catch (error) {
         console.log(error.message);
+        return null;
     }
 }
 
 async function createCheckout(checkout) {
     try {
-        console.log(checkout);
         const response = await fetch(`${url}`, {
             method: 'POST',
             headers: {
@@ -32,7 +40,6 @@ async function createCheckout(checkout) {
         });
         if (response.ok) {
             const product = await response.json();
-            console.log(product)
             return product.checkout;
         } else {
             return false;

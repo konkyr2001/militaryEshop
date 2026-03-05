@@ -42,7 +42,7 @@ const Account = () => {
         <div className="w-full min-width-[500px] h-full m-auto flex justify-center items-center">
           {tabOpen == 1 && <MyAccountSection currentUser={user} />}
           {tabOpen == 2 && <Orders currentUser={user} />}
-          {tabOpen == 3 && <Reviews currentUser={user} />}
+          {tabOpen == 3 && <Reviews currentUser={user} setUser={setUser} />}
           {tabOpen == 4 && <Products currentUser={user} />}
         </div>
       </div>

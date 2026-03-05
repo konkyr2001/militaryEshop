@@ -3,15 +3,17 @@ router = express.Router();
 const Checkout = require("../models/Checkout");
 const Product = require("../models/Product");
 
-router.get("/", async (req, res) => {
+router.post("/getCheckouts", async (req, res) => {
   try {
-    console.log("mpike");
-    const ids = req.query.ids;
-    const checkouts = await Promise.all(
-      ids.map(id => Checkout.findById({ _id: id }))
-    );
-    console.log("checkouts: ", checkouts);
-    res.status(200).json(checkouts);
+    const { ids } = req.body;
+    const checkoutArr = [];
+    for (const id of ids) {
+      const checkout = await Checkout.findById(id);
+      if (checkout) {
+        checkoutArr.push(checkout);
+      }
+    }
+    res.status(200).json(checkoutArr);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -20,9 +22,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const checkoutParam = req.body.checkout;
-  console.log('checkoutParam: ', checkoutParam)
   const checkout = new Checkout(checkoutParam);
-  console.log('checkout: ', checkout)
   try {
     const newCheckout = await checkout.save();
     for (const item of checkoutParam.items) {
@@ -31,7 +31,6 @@ router.post("/", async (req, res) => {
         { $inc: { bought: item.quantity }}
       );
     };
-    console.log('newCheckout: ', newCheckout)
     res.status(201).json({ checkout });
   } catch (error) {
     console.log(error.message);

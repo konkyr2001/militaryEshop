@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
+import { LogIn, UserPlus } from "lucide-react";
 import "./ReminderDialog.css";
 const ReminderDialog = forwardRef(({ handleModal }, ref) => {
   function handleDialog(event) {
@@ -20,19 +21,21 @@ const ReminderDialog = forwardRef(({ handleModal }, ref) => {
         Sign Up or Log In to Continue
       </h1>
       <h5 className="text-gray-600 text-center mb-6">
-        Save your favorite items or add them to your cart by creating an account or logging in.
+        Save your favourite items or add them to your cart by creating an account or logging in.
       </h5>
       <div className="flex justify-center gap-4">
         <Link
           to="/login"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+          className=" flex gap-2 items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
         >
+          <LogIn size={20}/>
           Log In
         </Link>
         <Link
           to="/signup"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+          className="flex gap-2 items-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
         >
+          <UserPlus size={20}/>
           Sign Up
         </Link>
       </div>

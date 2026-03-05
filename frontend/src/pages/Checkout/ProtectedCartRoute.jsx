@@ -1,10 +1,9 @@
-import { useParams, Navigate, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useParams, Navigate } from "react-router-dom";
+import { useContext } from "react";
 import { UserContext } from "../../App";
 import Cart from "./CartPage";
 
 function ProtectedCartRoute() {
-    const url = useLocation();
     const { id } = useParams();
     const { user } = useContext(UserContext);
 
@@ -13,7 +12,7 @@ function ProtectedCartRoute() {
     }
 
     if (!user.id || !id) { // not logged in
-        return <Navigate to="/" replace />;
+        return <Navigate to="/error" replace />;
     }
     
     return <Cart />   

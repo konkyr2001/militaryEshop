@@ -26,7 +26,6 @@ const SignUp = () => {
   async function userSignUpProgress() {
     try {
       const userExists = await getUser(email);
-        console.log("mpikeeee")
       if (userExists) {
         setEmailError("Email already exists, please try another one");
         return false;

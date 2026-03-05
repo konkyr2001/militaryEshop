@@ -9,7 +9,6 @@ router.get("/email/:email", async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    console.log("get user by email: ", user);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -23,7 +22,6 @@ router.get("/id/:id", async (req, res) => {
     const user = await User.findById({ 
       _id: userID
      });
-    console.log("get user by id: ", userID);
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,7 +30,6 @@ router.get("/id/:id", async (req, res) => {
 
 router.get("/:id/products", async (req, res) => {
   const userId = req.params.id;
-  console.log(userId)
   try {
     const user = await User.findById(userId)
       .populate("productsCreated");
@@ -65,12 +62,9 @@ router.put("/favourites/add/:email", async (req, res) => {
         _id: productId,
       });
       product.likes = Number(product.likes) + 1;
-      console.log(product);
       await product.save();
-      console.log("add product save");
       user.favourites.push(productId);
       await user.save();
-      console.log("add user save");
       return res.status(200).json(user);
     } else {
       return res.status(400).json({
@@ -78,6 +72,7 @@ router.put("/favourites/add/:email", async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ message: error.message });
   }
 });
@@ -87,19 +82,14 @@ router.put("/favourites/remove/:email", async (req, res) => {
   const productId = req.body.productId;
   try {
     const user = await User.findOne({ email });
-    console.log(user.favourites);
-    console.log(productId);
     if (user.favourites.includes(productId)) {
       const product = await Product.findById({
         _id: productId,
       });
       product.likes = Number(product.likes) - 1;
-      console.log(product);
       await product.save();
-      console.log("remove product save");
       user.favourites.remove(productId);
       await user.save();
-      console.log("remove user save");
       return res.status(200).json(user);
     } else {
       return res.status(400).json({
@@ -120,7 +110,6 @@ router.put("/cart/add/:email", async (req, res) => {
     if (!user.cart.includes(productId)) {
       user.cart.push(productId);
       await user.save();
-      console.log("add user save");
       return res.status(200).json(user);
     } else {
       return res.status(400).json({
@@ -137,17 +126,9 @@ router.put("/cart/remove/:email", async (req, res) => {
   const productId = req.body.productId;
   try {
     const user = await User.findOne({ email });
-    console.log(user);
-    if (user.cart.includes(productId)) {
       user.cart.remove(productId);
       await user.save();
-      console.log("add user save");
       return res.status(200).json(user);
-    } else {
-      return res.status(400).json({
-        message: "Product not found on cart",
-      });
-    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -161,10 +142,7 @@ router.post("/signup", async (req, res) => {
   });
 
   try {
-    console.log("mpike");
-    console.log(user);
     const newUser = await user.save();
-    console.log(newUser);
     res.status(201).json({ newUser });
   } catch (error) {
     console.log(error);
@@ -174,7 +152,6 @@ router.post("/signup", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const userId = req.params.id;
-  console.log(userId)
   try {
     const user = await User.findByIdAndDelete(userId);
     res.status(200).json(user);
@@ -194,10 +171,8 @@ router.put("/checkout/:id", async (req, res) => {
       user.checkouts.push(checkoutID);
       user.cart = [];
       await user.save();
-      console.log("user checkout added");
       return res.status(200).json(user);
     } else {
-      console.log("user checkout not added");
       return res.status(400).json({
         message: "Product not found on cart",
       });

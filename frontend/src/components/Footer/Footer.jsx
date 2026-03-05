@@ -13,7 +13,7 @@ function Footer() {
           <li>
             <h5 className="font-cabinetMedium">Contact:</h5>
             <p className="underline">1800 123 4567</p>
-            <p className="underline">javaria.y2b@gmail.com</p>
+            <p className="underline">loremipsum@gmail.com</p>
           </li>
           <li className="flex gap-4">
             <i className="fa-brands fa-facebook"></i>

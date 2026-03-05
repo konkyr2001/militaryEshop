@@ -7,29 +7,57 @@ import "./BestSelling.css";
 import { getBestSellers } from "../../services/products";
 import { useState } from "react";
 import { useEffect } from "react";
+import Loading from "../Shared/Loading";
 function BestSelling() {
-  const [bestSellers, setBestSellers] = useState();
+  const [bestSellers, setBestSellers] = useState([]);
+  const [isLoading, setIsLoading] = useState('');
+  const [error, setError] = useState('');
+
   useEffect(() => {
     async function get4BestProducts() {
       try {
         const best4Prod = await getBestSellers();
         if (best4Prod) {
           setBestSellers(best4Prod);
+          setError(false);
+        } else {
+          setError(true);
         }
       } catch (error) {
+        setError(true);
         console.log(error.message);
       }
+      setIsLoading(false);
 
     };
+
+    setIsLoading(true);
     get4BestProducts();
   }, []);
 
-  if (!bestSellers) {
-    return;
+  if (isLoading) {
+    return <Loading display='block' />
+  }
+
+  if (error || bestSellers.length == 0) {
+    return <div className="flex flex-col h-[300px] gap-2 justify-center items-center">
+      {error && <>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          Oops! Something went wrong
+        </h1>
+        <p className="text-gray-500 mb-6">
+          We’re sorry, but an unexpected error has occurred. Please try again
+          or return to the homepage.
+        </p>
+      </>}
+      {bestSellers.length == 0 && <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        No best sellers product yet!
+      </h1>}
+    </div>
   }
 
   return (
-    <div className="mt-40 font-cabinet pt-10">
+    <>
       <div className="flex w-full">
         <h1 className="text-black font-cabinetMedium text-4xl">BEST SELLING</h1>
         <ul className="flex gap-x-14 ml-auto mr-4">
@@ -55,11 +83,11 @@ function BestSelling() {
             <li className="w-[270px]" key={item.id}>
               <Item
                 id={item.id}
-                icon={item.icon}
+                icon={item.icon.url}
                 title={item.title}
                 currentPrice={item.currentPrice}
-                ratingValue={item.rating}
-                ratingAmount={item.ratingAmount}
+                ratingsSum={item.ratingsSum}
+                ratingsCounter={item.ratingsCounter}
               />
             </li>
           )}
@@ -68,7 +96,7 @@ function BestSelling() {
           SHOP NOW
         </button>
       </section>
-    </div>
+    </>
   );
 }
 

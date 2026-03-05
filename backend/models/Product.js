@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
   },
   ratings: [
     {
-      userId: {
+      user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
@@ -36,12 +36,27 @@ const productSchema = new mongoose.Schema({
       }
     },
   ],
-  ratingAmount: {
-    type: String,
+  ratingsCounter: {
+    type: Number,
+    default: 0,
+  },
+  ratingsSum: {
+    type: Number,
+    default: 0,
   },
   icon: {
-    type: String,
-    required: true,
+    name: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    key: {
+      type: String,
+      required: true,
+    }
   },
   bought: {
     type: Number,

@@ -16,8 +16,8 @@ function Item({
   oldPrice,
   currentPrice,
   discount,
-  ratingValue,
-  ratingAmount,
+  ratingsSum,
+  ratingsCounter,
   username = null,
   date = null,
   paddingTop,
@@ -84,7 +84,7 @@ function Item({
         }));
       }
     } catch (error) {
-      console.log("error");
+      console.log(error.message);
     }
   }
 
@@ -110,13 +110,12 @@ function Item({
         }));
       }
     } catch (error) {
-      console.log("error");
+      console.log(error.message);
     }
     handleModal();
   }
 
   function handleModal() {
-    console.log(dialogRef.current)
     if (!dialogRef.current) {
       return;
     }
@@ -140,7 +139,6 @@ function Item({
         onMouseLeave={() => setVisible(false)}
         style={{ paddingTop }}
       >
-        {alert && <Alert severity="success">{alert}</Alert>}
         <span className={`absolute right-5 top-4 flex justify-center items-center w-[30px] h-[30px] rounded-1/2`}>
           <like-effects
             style={{ cursor: "default", zIndex: "50" }}
@@ -160,13 +158,13 @@ function Item({
           </like-effects>
         </span>
         {discount && (
-          <span className="bg-red-500 absolute rounded-md top-4 left-5 text-white py-1 px-3">
+          <span className="bg-red-500 z-50 absolute rounded-md top-4 left-5 text-white py-1 px-3">
             -{discount}%
           </span>
         )}
         {singlePost ? (
           <img
-            className="w-[200px]"
+            className="max-w-[250px] max-h-[250px]"
             style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
             src={icon}
           />
@@ -175,14 +173,14 @@ function Item({
             to={`/product/${id}`}
           >
             <img
-              className="w-[200px] pointer"
+              className="max-w-[250px] max-h-[250px] pointer"
               style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
               src={icon}
             />
           </Link>
         )}
-          {cartInitialValue && alert && <Alert severity="success"><strong>{title}</strong> has been added to your cart</Alert>}
-          {!cartInitialValue && alert && <Alert severity="error"><strong>{title}</strong> has been removed to your cart</Alert>}
+        {cartInitialValue && alert && <Alert severity="success"><strong>{title}</strong> has been added to your cart</Alert>}
+        {!cartInitialValue && alert && <Alert severity="error"><strong>{title}</strong> has been removed to your cart</Alert>}
         <span
           className={`bg-black text-white text-center p-2 text-lg font-medium absolute w-full bottom-0 cursor-pointer
           ${visible ? "block" : "hidden"}`}
@@ -211,8 +209,29 @@ function Item({
         )}
         {!discount && <p>${currentPrice}</p>}
         <span>
-          <Rating readonly={true} initialValue={ratingValue} />
-          <span className="mt-[5px] ml-1 text-sm">({ratingAmount? ratingAmount : 0})</span>
+          {singlePost ? (
+            <a href="#ratings" className="cursor-pointer">
+              <Rating
+                allowFraction
+                readonly={true}
+                initialValue={ratingsCounter > 0 ? ratingsSum / ratingsCounter : 0}
+              />
+              <span className="mt-[5px] ml-1 text-sm">
+                ({ratingsCounter ? ratingsCounter : 0})
+              </span>
+            </a>
+          ) : (
+            <>
+              <Rating
+                allowFraction
+                readonly={true}
+                initialValue={ratingsCounter > 0 ? ratingsSum / ratingsCounter : 0}
+              />
+              <span className="mt-[5px] ml-1 text-sm">
+                ({ratingsCounter ? ratingsCounter : 0})
+              </span>
+            </>
+          )}
         </span>
         {singlePost && username && (
           <div className="flex flex-col mt-10">

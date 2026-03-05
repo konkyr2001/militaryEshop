@@ -5,7 +5,6 @@ import { removeFromFavourites } from "../../../services/user";
 import { UserContext } from "../../../App";
 import { Link } from "react-router-dom";
 import QuantityInput from "../../Shared/QuantityInput";
-const _SHOEPATH = "/src/assets/shoes/";
 
 function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, modalType, icon }) {
   const { user, setUser } = useContext(UserContext);
@@ -60,7 +59,7 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
         }
       }
     } catch (error) {
-      console.log("error");
+      console.log(error.message);
     }
   }
 
@@ -78,31 +77,35 @@ function Dialog({ imageRef, setIsDialogOpen, productsList, remove, emptyText, mo
             Your {modalType} ({products.length})
           </h2>
         )}
-        <ul className="flex flex-col gap-4 max-h-[380px] overflow-auto pr-5">
+        <ul className="flex flex-col pr-8 gap-4 max-h-[380px] overflow-auto">
           {products.map((product, index) => {
             totalCost += parseFloat(product.currentPrice);
             return (
               <li className="flex items-center gap-0 relative" key={product.id}>
-                <span className="absolute cursor-pointer right-1 mb-[10px] mt-2">
+                <span className="absolute cursor-pointer -right-6 mb-[10px] mt-2">
                   <i
                     className={`${icon}`}
                     slot="checked"
                     onClick={() => removeProduct(product.id)}
                   ></i>
                 </span>
-                <img className="w-20 h-20 flex-shrink-0" src={`${_SHOEPATH}${product.icon}`} />
+                <img className="w-20 h-20 mr-2 flex-shrink-0" src={product.icon.url} />
                 <div className="text-sm w-full break-words">
-                  <p className="text-center">{product.title}</p>
+                  <p>{product.title}</p>
                   {product.discount && (
-                    <p>
+                    <p className="flex flex-row justify-between">
                       <span className="text-red-500 font-bold">${product.currentPrice}</span>
                       <span className="ml-4 line-through">${product.oldPrice}</span>
                     </p>
                   )}
                   {!product.discount && <p>${product.currentPrice}</p>}
                   <span className="flex ">
-                    <Rating readonly={true} initialValue={product.rating} />
-                    <span className="mt-[5px] ml-1 text-sm">({product.ratingAmount})</span>
+                    <Rating
+                      allowFraction
+                      readonly={true}
+                      initialValue={product.ratingsCounter > 0 ? product.ratingsSum / product.ratingsCounter : 0}
+                    />
+                    <span className="mt-[5px] ml-1 text-sm">({product.ratingsCounter})</span>
                   </span>
                 </div>
               </li>

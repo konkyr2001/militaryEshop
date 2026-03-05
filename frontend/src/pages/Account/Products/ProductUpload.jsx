@@ -40,7 +40,8 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
             currentPrice: object.totalPrice,
             discount: object.discount > 0 ? object.discount : '',
             description: object.description,
-            icon: fileName,
+            iconName: fileName,
+            file: fileRef.current.files[0]
         }
 
         const newProduct = await createNewProduct(product, currentUser.id);
@@ -168,7 +169,7 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
                 {fileName && <label>{fileName}</label>}
             </div>
             <input onChange={(e) => onFileChange(e)} ref={fileRef} className="invisible top-5 absolute" type="file" name="myImage" accept="image/png, image/jpeg" placeholder="Upload an image" />
-            <p className="text-xs">Recommended image pixels 256 x 256</p>
+            <p className="text-xs">Recommended image pixels 200 x 200, Aspect Ratio: 1:1</p>
         </div>
         <button className="py-2 px-5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded text-white" variant="primary" type="submit">
             Upload Product
