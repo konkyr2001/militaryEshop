@@ -154,6 +154,11 @@ router.delete("/:id", async (req, res) => {
   const userId = req.params.id;
   try {
     const user = await User.findByIdAndDelete(userId);
+    await Product.deleteMany({ creator: userId });
+    await Product.updateMany( 
+      { "ratings.user": userId },
+      { $pull: { ratings: { user: userId } } }
+    );
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });

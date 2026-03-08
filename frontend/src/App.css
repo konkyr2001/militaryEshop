@@ -5,7 +5,7 @@ ul, li {
 }
 
 img {
-  cursor: default !important;
+  /* cursor: default !important; */
 }
 
 .pointer {

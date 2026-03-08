@@ -207,9 +207,9 @@ async function signupUser(email, password, role) {
   }
 }
 
-async function deleteUser(id) {
+async function deleteUser(userId) {
   try {
-    const response = await fetch(`${url}/${id}`, {
+    const response = await fetch(`${url}/${userId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

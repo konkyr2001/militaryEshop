@@ -119,7 +119,7 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
         fileRef.current.click();
     }
 
-    return <form onSubmit={(e) => handleSubmit(e)} className="min-w-[300px] w-[700px] px-5 pb-0 h-full m-auto flex flex-col items-center justify-center gap-3">
+    return <form onSubmit={(e) => handleSubmit(e)} className="min-w-[300px] max-w-[700px] px-5 pb-0 h-full m-auto flex flex-col items-center justify-center gap-3">
         <div>
             <h1>Product Information</h1>
         </div>
