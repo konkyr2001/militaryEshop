@@ -64,7 +64,7 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
     }
 
     function handlePrice(value) {
-        const regex = /^[0-9]+(,[0-9]*)?$/;
+        const regex = /^[0-9]+(.[0-9]*)?$/;
 
         if (value === "" || regex.test(value)) {
             setErrors((prev) => ({
@@ -151,7 +151,7 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
                 </div>
                 <div className={`flex-1 relative`}>
                     <label>DISCOUNT (%)</label>
-                    <input value={discount} onChange={(e) => handleDiscount(e.target.value)} vatype="number" placeholder="Enter discount" max="100" />
+                    <input value={discount} onChange={(e) => handleDiscount(e.target.value)} type="number" placeholder="Enter discount" max="100" />
                     <span className="absolute text-xl text-gray-700 font-extrabold right-2 bottom-0">%</span>
                 </div>
             </div>
