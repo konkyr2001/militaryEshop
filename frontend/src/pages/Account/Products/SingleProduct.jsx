@@ -45,7 +45,7 @@ function SingleProduct({ product, products, setProducts, userId, setAlert, setPr
             <span className="ml-10 text-sm">
                 {product.discount && (
                     <>
-                        <p>Price before discount: {product.oldPrice}$</p>
+                        <p>Initial Price: {product.oldPrice}$</p>
                         <p>Discount: {product.discount}%</p>
                         <p>Current price: {product.currentPrice}$</p>
                     </>
