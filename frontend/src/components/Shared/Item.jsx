@@ -165,7 +165,7 @@ function Item({
         {singlePost ? (
           <img
             className="max-w-[250px] max-h-[250px]"
-            style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
+            // style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
             src={icon}
           />
         ) : (
@@ -174,7 +174,7 @@ function Item({
           >
             <img
               className="max-w-[250px] max-h-[250px] pointer"
-              style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
+              // style={{ filter: "drop-shadow(5px 4px 1px rgba(0, 0, 0, 0.3))" }}
               src={icon}
             />
           </Link>
