@@ -69,7 +69,7 @@ function RatingSection({ reviewsObj, setReviewsObj, user, setUser, item }) {
             setUser(prev => ({
                 ...prev,
                 ratings: [
-                    ...prev.ratings,
+                    ...(prev?.ratings || []),
                     {
                         date: newReview.date,
                         product: item.id,
@@ -85,6 +85,8 @@ function RatingSection({ reviewsObj, setReviewsObj, user, setUser, item }) {
         }
     }
     return <div className={`pb-20`} id="ratings">
+        {console.log(ratingAlert.message)}
+        {console.log(user)}
         {ratingAlert.message && <Alert severity={ratingAlert.severity}>{ratingAlert.message}</Alert>}
         <h2 className="reviews text-4xl font-semibold border-b pb-2">Product Reviews</h2>
         {!currentUserRated && user?.email && <form className="mt-10 flex flex-col gap-3 relative" onSubmit={(e) => handleForm(e)}>
@@ -110,9 +112,13 @@ function RatingSection({ reviewsObj, setReviewsObj, user, setUser, item }) {
                 <i className="fa-solid fa-angle-right text-slate-100"></i>
             </button>
         </form>}
-        {reviewsObj.counter > 0 && reviewsObj.reviews.map((rating) =>
-            <SingleRating key={rating._id} itemId={item.id} rating={rating} userId={user.id} setRatingAlert={setRatingAlert} reviews={reviewsObj.reviews} setReviewsObj={setReviewsObj} />
-        )}
+        {reviewsObj.counter > 0 && reviewsObj.reviews.map((rating) => {
+            if (rating?.user?.email) {
+                return <SingleRating key={rating._id} itemId={item.id} rating={rating} userId={user.id} setRatingAlert={setRatingAlert} reviews={reviewsObj.reviews} setReviewsObj={setReviewsObj} />
+            }
+        })}
+
+        {reviewsObj.counter == 0 && !user.email && <p className="leading-relaxed text-lg tracking-wide text-justify text-gray-800 mt-6"> This product has no reviews yet.</p>}
     </div>
 }
 

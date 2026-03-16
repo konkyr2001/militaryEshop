@@ -19,6 +19,10 @@ function ProtectedAccountRoute() {
         return <Navigate to="/" replace />;
     }
 
+    if (!user.email) {
+        return <Navigate to="/" replace />;
+    }
+
     return <Account />   
 }
 

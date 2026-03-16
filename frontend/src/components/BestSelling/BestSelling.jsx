@@ -77,8 +77,8 @@ function BestSelling() {
           </li>
         </ul>
       </div>
-      <section className="flex flex-col w-full">
-        <ul className="flex gap-x-20 justify-center py-20">
+      <section className="flex flex-col w-full overflow-hidden">
+        <ul className="flex gap-x-20 py-10 m-auto w-full 2xl:justify-center overflow-x-auto">
           {bestSellers?.map((item) =>
             <li className="w-[270px]" key={item.id}>
               <Item
@@ -92,7 +92,7 @@ function BestSelling() {
             </li>
           )}
         </ul>
-        <button className="bg-black py-2 px-5 w-fit text-white font-cabinet font-semibold m-auto">
+        <button className="bg-black py-2 px-5 mt-4 2xl:mt-0 w-fit text-white font-cabinet font-semibold m-auto">
           SHOP NOW
         </button>
       </section>

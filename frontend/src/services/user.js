@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs-react";
 
-// const url = "https://militaryeshop-1.onrender.com/users";
-const url = "http://localhost:3000/users";
+const url = `${import.meta.env.VITE_BACKEND_URL}/users` || "http://localhost:3000/users";
 
 async function checkUser(email, password) {
   try {
@@ -215,7 +214,6 @@ async function deleteUser(userId) {
         "Content-Type": "application/json",
       },
     });
-
     const data = await response.json();
     if (response.ok) {
       return {

@@ -58,13 +58,30 @@ router.post("/byIds", async (req, res) => {
 
 router.post('/create', upload.single('file'), async (req, res) => {
   try {
+    // Step 1: Route reached
+    console.error("ROUTE HIT: /products/create");
+
+    // Step 2: Check req.body
+    console.error("REQ.BODY:", req.body);
+
+    // Step 3: Check file
+    const file2 = req.file;
+    if (!file2) {
+      console.error("ERROR: No file uploaded");
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+        console.error("FILE INFO:", {
+      originalname: file2.originalname,
+      mimetype: file2.mimetype,
+      size: file2.size
+    });
     const { userId, iconName, ...createdProduct } = req.body;
     const file = req.file;
     const accessKeyId = process.env.S3_ACCESS_KEY;
     const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
     const bucket = process.env.S3_BUCKET_NAME;
     const region = process.env.S3_BUCKET_REGION;
-
+console.error("ENV VARS:", { accessKeyId, secretAccessKey, bucket, region });
     const s3 = new S3Client({
       credentials: {
         accessKeyId,
@@ -74,6 +91,7 @@ router.post('/create', upload.single('file'), async (req, res) => {
     });
 
     const fileKey = `upload/${uuidv4()}_${iconName}`;
+     console.error("Uploading to S3 with key:", fileKey);
     await s3.send(new PutObjectCommand({
       Bucket: bucket,
       Key: fileKey,
@@ -82,7 +100,7 @@ router.post('/create', upload.single('file'), async (req, res) => {
     }));
 
     const s3Url = `https://${bucket}.s3.${region}.amazonaws.com/${fileKey}`;
-
+console.error("S3 upload successful, URL:", s3Url);
     createdProduct.icon = {
       name: iconName,
       url: s3Url,
@@ -91,13 +109,16 @@ router.post('/create', upload.single('file'), async (req, res) => {
 
     const product = new Product(createdProduct);
     const newProduct = await product.save();
+    console.error("PRODUCT SAVED:", newProduct._id);
     await User.findByIdAndUpdate(
       userId,
       {
         $push: { productsCreated: newProduct._id }
       });
+      console.error("USER UPDATED:", userId);
     res.status(201).json({ newProduct })
   } catch (error) {
+    console.error("CREATE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -144,7 +165,6 @@ router.post('/ratedByUser', async (req, res) => {
     });
     res.status(200).json(products);
   } catch (error) {
-    console.log(error.message)
     res.status(500).json({ message: error.message });
   }
 });

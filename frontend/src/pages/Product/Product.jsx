@@ -99,7 +99,7 @@ function Product() {
           {item.description}
         </p>}
         {!item.description && <p className="leading-relaxed text-lg tracking-wide text-justify">
-          Product has no description
+          This product has no description yet.
         </p>}
         <h2></h2>
       </div>

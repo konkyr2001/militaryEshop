@@ -15,10 +15,11 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("DEFAULT");
   const [remember, setRemember] = useState(false);
+  const [recaptcha, setRecaptcha] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [recaptcha, setRecaptcha] = useState(false);
   const [roleError, setRoleError] = useState(false);
+  const [recaptchaError, setRecaptchaError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
@@ -57,25 +58,25 @@ const SignUp = () => {
   }
 
   async function handleSubmit(event) {
-    if (!recaptcha) return;
-
     event.preventDefault();
+
     if (!checkInputs(event)) {
       return;
     }
+    if (!recaptcha) {
+      setRecaptchaError("true");
+      return;
+    }
+
     userSignUpProgress();
   }
 
   function checkInputs(event) {
-    handleInvalidEmail(event);
-    handleInvalidPassword(event);
-    handleInvalidRole(event);
+    const emailInvalid = handleInvalidEmail(event);
+    const passwordInvalid = handleInvalidPassword(event);
+    const roleInvalid = handleInvalidRole(event);
 
-    if (!handleInvalidEmail(event) && !handleInvalidPassword(event) && !handleInvalidRole(event)) {
-      return true;
-    } else {
-      return false;
-    }
+    return !emailInvalid && !passwordInvalid && !roleInvalid;
   }
 
   function handleInvalidEmail(event) {
@@ -123,15 +124,15 @@ const SignUp = () => {
       <div className="w-screen h-screen bg-gray-200 flex justify-center items-center bg-gradient-to-r from-blue-300 to-purple-300">
         <div className="min-w-[30rem] shadow-xl bg-white rounded-xl p-8 font-cabinet">
           <h1 className="font-bold text-2xl text-left w-full">Create an Account</h1>
-          <form className="mx-3 mt-6 mb-5" method="POST" onSubmit={(e) => handleSubmit(e)}>
+          <form className="mx-3 mt-6 mb-5" method="POST" noValidate={true} onSubmit={(e) => handleSubmit(e)}>
             <fieldset className="flex justify-center items-center flex-col gap-5 text-left">
               <span className="w-full">
                 <EmailInput
                   placeholder="Enter your email*"
                   className={`px-4 tracking-wider ${emailError ? "border-red-500" : ""}`}
                   value={email}
+                  required={true}
                   onChange={(e) => setEmail(e.target.value)}
-                  onInvalid={(e) => e.preventDefault()}
                 />
                 {emailError && (
                   <p className="error-signup">
@@ -143,9 +144,9 @@ const SignUp = () => {
                 <PasswordInput
                   placeholder="Enter your password*"
                   className={`px-4 tracking-wider ${passwordError ? "border-red-500" : ""}`}
+                  required={true}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  onInvalid={(e) => e.preventDefault()}
                   ref={passwordRef}
                 />
                 {passwordError && (
@@ -157,10 +158,10 @@ const SignUp = () => {
               <span className="w-full">
                 <select
                   value={role}
+                  required={true}
                   onChange={(e) => setRole(e.target.value)}
                   className={`text-gray-800 border rounded-sm p-2 px-3 tracking-wider w-full
                   ${roleError ? "border-red-500" : ""} focus:outline-blue-300 focus:border-blue-500`}
-                  required
                 >
                   <option value="DEFAULT" disabled className="text-gray-800 bg-gray-100">
                     Choose your role*
@@ -177,7 +178,7 @@ const SignUp = () => {
                 )}
               </span>
               <RememberMe className={"w-4 h-4"} remember={remember} setRemember={setRemember} />
-              <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA} onChange={(e) => setRecaptcha(true)}/>
+              <ReCAPTCHA className={`${recaptchaError ? "border border-red-500" : ""}`} sitekey={import.meta.env.VITE_RECAPTCHA} onChange={(e) => setRecaptcha(true)}/>
               <SubmitButton
                 buttonText="Sign Up"
                 className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold hover:from-green-600 hover:to-green-700"

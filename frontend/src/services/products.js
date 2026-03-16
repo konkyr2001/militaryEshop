@@ -1,7 +1,4 @@
-import { UNSAFE_ErrorResponseImpl } from "react-router-dom";
-
-// const url = "https://militaryeshop-1.onrender.com/products";
-const url = "http://localhost:3000/products";
+const url = `${import.meta.env.VITE_BACKEND_URL}/products` || "http://localhost:3000/products";
 
 async function getAllProducts() {
   try {

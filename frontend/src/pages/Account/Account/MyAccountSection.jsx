@@ -32,7 +32,6 @@ const MyAccountSection = ({ currentUser }) => {
   useEffect(() => {
     setEmail(currentUser.email);
     setPassword(currentUser.password);
-    console.log(currentUser)
   }, [currentUser]);
 
   useEffect(() => {

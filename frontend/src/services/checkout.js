@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs-react";
 
-// const url = "https://militaryeshop-1.onrender.com/checkouts";
-const url = "http://localhost:3000/checkout";
+const url = `${import.meta.env.VITE_BACKEND_URL}/checkout` || "http://localhost:3000/checkout";
 
 async function getCheckoutsById(ids) {
     try {

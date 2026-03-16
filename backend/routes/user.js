@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Product = require("../models/Product");
+const Checkout = require("../models/Checkout");
 // const bcrypt = require("bcryptjs");
 
 router.get("/email/:email", async (req, res) => {
@@ -19,9 +20,9 @@ router.get("/id/:id", async (req, res) => {
   const userID = req.params.id;
 
   try {
-    const user = await User.findById({ 
+    const user = await User.findById({
       _id: userID
-     });
+    });
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -126,9 +127,9 @@ router.put("/cart/remove/:email", async (req, res) => {
   const productId = req.body.productId;
   try {
     const user = await User.findOne({ email });
-      user.cart.remove(productId);
-      await user.save();
-      return res.status(200).json(user);
+    user.cart.remove(productId);
+    await user.save();
+    return res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -155,10 +156,27 @@ router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(userId);
     await Product.deleteMany({ creator: userId });
-    await Product.updateMany( 
-      { "ratings.user": userId },
-      { $pull: { ratings: { user: userId } } }
-    );
+    await Checkout.deleteMany({ buyer: userId });
+    const products = await Product.find({ "ratings.user": userId });
+
+    for (const product of products) {
+      const ratingObj = product.ratings.find(
+        (r) => r.user.toString() === userId.toString()
+      );
+
+      if (!ratingObj) continue; // skip if not found
+      console.log(ratingObj)
+      await Product.updateOne(
+        { _id: product._id },
+        {
+          $pull: { ratings: { user: ratingObj.user } },
+          $inc: {
+            ratingsCounter: -1,
+            ratingsSum: -ratingObj.rating
+          }
+        }
+      );
+    }
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
