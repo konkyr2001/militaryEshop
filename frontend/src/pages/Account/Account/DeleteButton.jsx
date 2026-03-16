@@ -1,9 +1,11 @@
 import "./DeleteButton.css";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { deleteUser } from "../../../services/user";
 import Loading from "../../../components/Shared/Loading";
 function DeleteButton({ className, buttonText, currentUser, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dialogContentRef = useRef();
 
@@ -35,7 +37,13 @@ function DeleteButton({ className, buttonText, currentUser, ...props }) {
         localStorage.clear();
         setIsLoading(true);
         setTimeout(() => {
-          location.reload();
+          navigate("/", {
+            state: {
+              email: null,
+              password: null,
+            },
+            replace: true
+          });
           setIsLoading(false);
         }, 200);
       } else {
