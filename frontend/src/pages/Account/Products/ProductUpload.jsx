@@ -59,27 +59,42 @@ function ProductUpload({ currentUser, setActiveTab, setProductAlert }) {
         }))
     }
 
+    function truncateToTwoDecimals(num) {
+        return Math.trunc(num * 100) / 100;
+    }
+
     function handlePrice(value) {
         const regex = /^[0-9]+(,[0-9]*)?$/;
+
         if (value === "" || regex.test(value)) {
             setErrors((prev) => ({
                 ...prev,
                 price: false
-            }))
+            }));
+
             setPrice(value);
-            value = Number(value.replace(",", "."));
-            const totalPrice = value - (value) * discount / 100;
-            setTotalPrice(isNaN(totalPrice) ? '0' : totalPrice);
+
+            const numValue = Number(value.replace(",", "."));
+            const total = numValue - numValue * discount / 100;
+
+            const totalPrice = truncateToTwoDecimals(total);
+
+            setTotalPrice(isNaN(totalPrice) ? "0" : totalPrice);
         }
     }
 
     function handleDiscount(value) {
         const regex = /^(100|[1-9]?[0-9])$/;
+
         if (value === "" || regex.test(value)) {
             setDiscount(value);
+
             const newPrice = Number(price.replace(",", "."));
-            const totalPrice = newPrice - (newPrice) * value / 100;
-            setTotalPrice(isNaN(totalPrice) ? '0' : totalPrice);
+            const total = newPrice - newPrice * value / 100;
+
+            const totalPrice = truncateToTwoDecimals(total);
+
+            setTotalPrice(isNaN(totalPrice) ? "0" : totalPrice);
         }
     }
 
